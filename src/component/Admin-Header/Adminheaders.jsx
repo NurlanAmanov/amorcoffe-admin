@@ -37,6 +37,7 @@ function AdminHeaders() {
       { label: 'Ayarlar Siyahısı', path: '/settings/list' },
       { label: 'Yeni Ayar Əlavə Et', path: '/settings/add' },
       { label: 'Təhlükəsizlik', path: '/settings/security' },
+      { label: 'Saytbanner', path: '/Headbanner' },
     ],
   };
 
@@ -66,7 +67,7 @@ function AdminHeaders() {
                 <span className='ml-2'>&#9660;</span>
               </button>
               {isDropdownOpen[menu] && (
-                <ul className='absolute right-0 mt-2 left-0  z-50 bg-white shadow-lg rounded-md w-48 text-black sm:absolute sm:mt-2'>
+                <ul className='absolute right-0 mt-2 left-0  z-50 bg-white shadow-lg rounded-md w-44 text-black sm:absolute sm:mt-2'>
                   {menuItems[menu].map((item, i) => (
                     <li key={i} className='px-4 py-2 hover:bg-gray-100 cursor-pointer'>
                       <Link to={item.path}>{item.label}</Link>

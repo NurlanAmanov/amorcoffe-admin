@@ -8,6 +8,7 @@ import Categoryalist from './component/Cetogry/Categoryalist';
 import AddPromoCode from './component/Main-admin/Usersetting';
 import Loginadmin from './component/Main-admin/Loginadmin';
 import Categoryadd from './component/Cetogry/Categoryadd';
+import Headbanner from './component/siteayarlar/Headbanner';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="Categoryalist" element={<Categoryalist />} />
           <Route path="AddPromoCode" element={<AddPromoCode />} />
           <Route path="Categoryadd" element={<Categoryadd />} />
+          <Route path="Headbanner" element={<Headbanner />} />
         </Route>
  
     </Routes>
