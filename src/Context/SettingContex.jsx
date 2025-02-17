@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { DeleteHeadbanner, GetHeadderbanner, UpdateHeadbanner } from '../service/Setting';
+import { AddHeadbanner, DeleteHeadbanner, GetHeadderbanner, UpdateHeadbanner } from '../service/Setting';
 
 
 export const SETTIGDATA = createContext([]);
