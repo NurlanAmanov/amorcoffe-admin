@@ -26,12 +26,12 @@ function AdminHeaders() {
     ],
     categories: [
       { label: 'Kateqoriya Siyahısı', path: '/Categoryalist' },
-      { label: 'Yeni Kateqoriya Əlavə Et', path: '/categories/add' },
+      { label: 'Yeni Kateqoriya Əlavə Et', path: '/Categoryadd' },
     ],
     users: [
       { label: 'İstifadəçi Siyahısı', path: '/users' },
       { label: 'Yeni İstifadəçi Əlavə Et', path: '/users/add' },
-      { label: 'Rolları İdarə Et', path: '/users/roles' },
+      { label: 'İstifadəçi ayarları', path: '/AddPromoCode' },
     ],
     settings: [
       { label: 'Ayarlar Siyahısı', path: '/settings/list' },
