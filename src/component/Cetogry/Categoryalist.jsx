@@ -1,65 +1,98 @@
-import React, { useContext } from 'react'
-import { MEHSULLARLIST } from '../../Context/ProductContext'
+import React, { useState, useEffect, useContext } from 'react';
+import { MEHSULLARLIST } from '../../Context/ProductContext';
+import axios from 'axios';
 
 function Categoryalist() {
-        const {category}=useContext(MEHSULLARLIST)
-  return (
-    <div className="font-[sans-serif] overflow-x-auto">
-    <table className="min-w-full bg-white">
-      <thead className="bg-gray-800 whitespace-nowrap">
-        <tr>
-          <th className="p-4 text-left text-sm font-medium text-white">
-            Məhsulun Şəkili
-          </th>
-          <th className="p-4 text-left text-sm font-medium text-white">
-          Məhsulun adı
-          </th>
-          <th className="p-4 text-left text-sm font-medium text-white">
-          Kateqoriya  
-          </th>
-          <th className="p-4 text-left text-sm font-medium text-white">
-          Məhsulun sayı
-          </th>
-          <th className="p-4 text-left text-sm font-medium text-white">
-          Kateqoriya İD
-          </th>
-         
-        </tr>
-      </thead>
+    const { category, setCategory } = useContext(MEHSULLARLIST); // Assuming context provides category list
+    const [categories, setCategories] = useState([]); // State for categories
+    const [loading, setLoading] = useState(true); // Loading state
 
-      <tbody className="whitespace-nowrap">
-        {category && category.map((item,i)=>{
-          return (
-              <tr key={i} className="even:bg-blue-50">
-          <td className="p-4 text-sm text-black">
-         <img  src={`http://finalprojectt-001-site1.jtempurl.com${item.imgUrl}`} className='w-[40px] h-[40px] object-cover' alt='Mehsul' />
-          </td>
-          <td className="p-4 text-sm text-black">
-        {item.name}
-          </td>
+    // 📌 Fetch categories and update the state
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get("https://finalprojectt-001-site1.jtempurl.com/api/Category");
+                setCategories(response.data); // Set categories from API response
+                setLoading(false);
+            } catch (error) {
+                console.error("Xəta: Kateqoriyalar alınmadı", error);
+                setLoading(false);
+            }
+        };
 
-          <td className="p-4 text-sm text-black">
-           {item.name}
-          </td>
-          <td className="p-4 text-sm text-black">
-          {category.length}
-          </td>
-         
-          
-          <td className="p-4 text-sm text-black">
-           {item.id}
-          </td>
+        fetchCategories();
+    }, []);
 
-         
-        </tr>
-          )
-        })}
+    // 📌 Handle category deletion
+    const handleDelete = async (id) => {
+        try {
+            const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Category/${id}`);
+            if (response.status === 200) {
+                // Remove the deleted category from the state
+                const updatedCategories = categories.filter(category => category.id !== id);
+                setCategories(updatedCategories);
+                alert('Kateqoriya uğurla silindi!');
+            } else {
+                alert('Kateqoriya silinərkən xəta baş verdi!');
+            }
+        } catch (error) {
+            console.error('Kateqoriya silinərkən xəta:', error);
+            alert('Kateqoriya silinərkən xəta baş verdi!');
+        }
+    };
 
- 
-      </tbody>
-    </table>
-  </div>
-  )
+    // 📌 Loading indicator
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    return (
+        <div className="font-[sans-serif]  mx-auto overflow-x-auto">
+            <table className="min-w-full bg-white">
+                <thead className="bg-gray-800 whitespace-nowrap">
+                    <tr>
+                        <th className="p-4 text-left text-sm font-medium text-white">Məhsulun Şəkili</th>
+                        <th className="p-4 text-left text-sm font-medium text-white">Məhsulun adı</th>
+                        <th className="p-4 text-left text-sm font-medium text-white">Kateqoriya</th>
+                        <th className="p-4 text-left text-sm font-medium text-white">Məhsulun sayı</th>
+                        <th className="p-4 text-left text-sm font-medium text-white">Kateqoriya İD</th>
+                        <th className="p-4 text-left text-sm font-medium text-white">Əməliyyat</th>
+                    </tr>
+                </thead>
+
+                <tbody className="whitespace-nowrap">
+                    {categories.map((item, i) => {
+                        // Count products in each category
+                        const productCount = item.products ? item.products.length : 0;
+
+                        return (
+                            <tr key={i} className="even:bg-blue-50">
+                                <td className="p-4 text-sm text-black">
+                                    <img
+                                        src={`http://finalprojectt-001-site1.jtempurl.com${item.imgUrl}`}
+                                        className="w-[40px] h-[40px] object-cover"
+                                        alt="Mehsul"
+                                    />
+                                </td>
+                                <td className="p-4 text-sm text-black">{item.name}</td>
+                                <td className="p-4 text-sm text-black">{item.name}</td>
+                                <td className="p-4 text-sm text-black">{productCount}</td>
+                                <td className="p-4 text-sm text-black">{item.id}</td>
+                                <td className="p-4 text-sm text-black">
+                                    <button
+                                        onClick={() => handleDelete(item.id)}
+                                        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                                    >
+                                        Sil
+                                    </button>
+                                </td>
+                            </tr>
+                        );
+                    })}
+                </tbody>
+            </table>
+        </div>
+    );
 }
 
-export default Categoryalist
+export default Categoryalist;

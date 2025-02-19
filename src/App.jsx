@@ -9,6 +9,12 @@ import AddPromoCode from './component/Main-admin/Usersetting';
 import Loginadmin from './component/Main-admin/Loginadmin';
 import Categoryadd from './component/Cetogry/Categoryadd';
 import Headbanner from './component/siteayarlar/Headbanner';
+import Slogan from './component/Main-admin/Slogan';
+import Tagsetting from './component/Main-admin/Tagsetting';
+import Variantsetting from './component/Main-admin/Variantsetting';
+import Logoupload from './component/Main-admin/Logoupload';
+import Adminhome from './component/Main-admin/Adminhome';
+
 
 function App() {
 
@@ -42,6 +48,12 @@ function App() {
           <Route path="AddPromoCode" element={<AddPromoCode />} />
           <Route path="Categoryadd" element={<Categoryadd />} />
           <Route path="Headbanner" element={<Headbanner />} />
+          <Route path="Tagadd" element={<Tagsetting />} />
+          <Route path="Slogan" element={<Slogan />} />
+          <Route path="Variantsetting" element={<Variantsetting />} />
+          <Route path="Logoupload" element={<Logoupload />} />
+          <Route path="Adminhome" element={<Adminhome />} />
+      
         </Route>
  
     </Routes>

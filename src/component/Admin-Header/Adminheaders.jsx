@@ -34,10 +34,10 @@ function AdminHeaders() {
       { label: 'İstifadəçi ayarları', path: '/AddPromoCode' },
     ],
     settings: [
-      { label: 'Ayarlar Siyahısı', path: '/settings/list' },
-      { label: 'Yeni Ayar Əlavə Et', path: '/settings/add' },
-      { label: 'Təhlükəsizlik', path: '/settings/security' },
       { label: 'Saytbanner', path: '/Headbanner' },
+      { label: 'Haqqımızda', path: '/Slogan' },
+      { label: 'Taglar', path: '/Tagadd' },
+      { label: 'Məhsul ölçü', path: '/Variantsetting' },
     ],
   };
 

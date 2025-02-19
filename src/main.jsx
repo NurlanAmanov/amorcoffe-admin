@@ -8,6 +8,7 @@ import { CustomAuthProvider } from './Context/Authlogin.jsx'
 import SettingContex from './Context/SettingContex.jsx'
 
 
+
 createRoot(document.getElementById('root')).render(
 
 <BrowserRouter>
@@ -15,7 +16,6 @@ createRoot(document.getElementById('root')).render(
 <CustomAuthProvider>
 <USERCONTEXT>
 <SettingContex>
-
 <App />
 </SettingContex>
 </USERCONTEXT>
