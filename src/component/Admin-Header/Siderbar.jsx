@@ -94,30 +94,15 @@ function Sidebar() {
                  <Link to="Slogan">Slogan</Link>
                  <Link to="Tagadd">Taglar</Link>
                  <Link to="Logoupload">Logo</Link>
-                 <Link to="Slogan">Slogan</Link>
+                 <Link to="SocialMedia">Socialmedia</Link>
+                 <Link to="Silder">Silder</Link>
+
+                 <Link  to="Variantsetting">Məhsul ölçüləri</Link>
               </ul>
             )}
           </li>
-          <li>
-            <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
-               onClick={() => toggleDropdown('refunds')}>
-              <span>Refunds</span>
-              <span className="ml-auto">{dropdownOpen.refunds ? '-' : '+'}</span>
-            </a>
-            {dropdownOpen.refunds && (
-              <div className="pl-4 text-gray-300">Refund Policies</div>
-            )}
-          </li>
-          <li>
-            <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
-               onClick={() => toggleDropdown('profile')}>
-              <span>Profile</span>
-              <span className="ml-auto">{dropdownOpen.profile ? '-' : '+'}</span>
-            </a>
-            {dropdownOpen.profile && (
-              <div className="pl-4 text-gray-300">Profile Settings</div>
-            )}
-          </li>
+         
+         
         </ul>
       </nav>
     </>

@@ -28,8 +28,13 @@ function VariantSetting() {
     setLoading(true);
 
     try {
+      const token = localStorage.getItem('jwtToken'); // Token əlavə edin
       const response = await axios.post("https://finalprojectt-001-site1.jtempurl.com/api/Variant", {
         Name: variantName
+      }, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Token əlavə edin
+        },
       });
 
       if (response.status === 200) {
@@ -48,18 +53,30 @@ function VariantSetting() {
   const handleDelete = async (id) => {
     setLoading(true);
     try {
-      const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Variant/${id}`);
+      const token = localStorage.getItem('jwtToken'); // Token əlavə edin
+      const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Variant?id=${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Token əlavə edin
+        },
+      });
+  
+      // API cavabını yoxlayırıq
       if (response.status === 200) {
         alert("✅ Variant deleted successfully!");
-        fetchVariants(); // Refresh the variants list
+        fetchVariants(); // Variantları yeniləyin
+      } else {
+        console.error("Server cavabı:", response);
+        alert("❌ Variant silinərkən xəta baş verdi.");
       }
     } catch (error) {
+      // Xətanı daha yaxşı izah edirik
       console.error("Error deleting variant:", error);
-      alert("❌ Error while deleting variant");
+      alert("❌ Error while deleting variant: " + error.message);
     } finally {
       setLoading(false);
     }
   };
+  
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
