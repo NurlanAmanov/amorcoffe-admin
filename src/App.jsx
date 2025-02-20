@@ -17,6 +17,7 @@ import Adminhome from './component/Main-admin/Adminhome';
 
 import SocialMedia from './component/Main-admin/Socialmedia';
 import Silder from './component/Main-admin/Silder';
+import Promcode from './component/Main-admin/Promcode';
 
 
 function App() {
@@ -59,6 +60,7 @@ function App() {
           <Route path="Variantsetting" element={<Variantsetting />} />
           <Route path="SocialMedia" element={<SocialMedia />} />
           <Route path="Silder" element={<Silder />} />
+          <Route path="Promakod" element={<Promcode />} />
       
         </Route>
  

@@ -7,8 +7,8 @@ function Userlist() {
 
   return (
     <>
-      <div className="font-sans overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div className="font-sans w-[95%] overflow-x-auto">
+        <table className="w-[95%] mx-auto divide-y divide-gray-200">
           <thead className="bg-gray-100 whitespace-nowrap">
             <tr>
               <th className="px-4 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
@@ -34,7 +34,7 @@ function Userlist() {
                     <ul>
                       {item.userPromocodes.map((promo, index) => (
                         <li key={index}>
-                          <span className="font-medium text-blue-600">{promo.promocode.code}</span> 
+                          <span className="font-medium text-blue-600">{promo.userPromocodes}</span> 
                           ({promo.promocode.discountPercentage}% endirim)
                         </li>
                       ))}

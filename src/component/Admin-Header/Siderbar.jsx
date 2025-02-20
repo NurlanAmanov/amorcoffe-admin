@@ -22,7 +22,7 @@ function Sidebar() {
 
   return (
     <>
-      <nav className="bg-[#121e31] fixed top-0 left-0 h-[100vh] left-0 w-[250px] py-6 px-4 font-[sans-serif] tracking-wide overflow-auto">
+      <nav className="bg-[#121e31] h-[100vh] left-0 w-[250px] py-6 px-4 font-[sans-serif] tracking-wide overflow-auto">
         <ul className="space-y-3">
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
@@ -96,6 +96,7 @@ function Sidebar() {
                  <Link to="Logoupload">Logo</Link>
                  <Link to="SocialMedia">Socialmedia</Link>
                  <Link to="Silder">Silder</Link>
+                 <Link to="Promakod">Promakod</Link>
 
                  <Link  to="Variantsetting">Məhsul ölçüləri</Link>
               </ul>
