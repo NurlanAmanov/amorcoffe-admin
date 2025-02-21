@@ -26,22 +26,14 @@ function Categoryalist() {
   // 📌 Handle category deletion
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Category/${id}`, {
-        headers: {
-          // API-də token və ya digər parametrlər tələb olunarsa, onları əlavə edə bilərsiniz
-          // Authorization: `Bearer ${yourToken}`
-        }
-      });
+      const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Category/${id}`);
       if (response.status === 200) {
-        // Remove the deleted category from the state (state yenilənməsi burada həyata keçirilir)
+        // Update state only if there was no error
         setCategories((prevCategories) => prevCategories.filter((category) => category.id !== id));
         alert('Kateqoriya uğurla silindi!');
-      } else {
-        alert('Kateqoriya silinərkən xəta baş verdi!');
-      }
-    } catch (error) {
-      console.error('Kateqoriya silinərkən xəta:', error);
-      alert('Kateqoriya silinərkən xəta baş verdi!');
+      } 
+    }  finally {
+      window.location.reload(); // Səhifəni yenilə, xəta olsa da, olmasa da
     }
   };
 

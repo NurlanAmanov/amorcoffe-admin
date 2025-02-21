@@ -1,41 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 function Logoupload() {
   const [file, setFile] = useState(null);
-  const [folderName, setFolderName] = useState('Logo');
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
-  const [imageList, setImageList] = useState([]); // Yüklənən şəkillərin siyahısı
 
-  // 📌 Bütün şəkilləri çəkmək
-  const fetchAllImages = async () => {
-    try {
-      const response = await fetch('https://finalprojectt-001-site1.jtempurl.com/api/Logo');
-      if (!response.ok) throw new Error('Şəkillər yüklənmədi!');
-      const data = await response.json();
-      setImageList(data); // Şəkilləri siyahıya əlavə edin
-    } catch (error) {
-      console.error('Şəkillər yüklənmə xətası:', error);
-      alert('Şəkillər yüklənməsi zamanı xəta baş verdi!');
-    }
-  };
-
-  // Komponent yüklənəndə bütün şəkilləri çək
-  useEffect(() => {
-    fetchAllImages();
-  }, []);
-
-  // Faylın seçilməsi
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
   };
 
-  // Qovluq adının dəyişdirilməsi
-  const handleFolderNameChange = (event) => {
-    setFolderName(event.target.value);
-  };
-
-  // Şəkil yüklənməsi və URL alınması
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!file) {
@@ -46,82 +19,36 @@ function Logoupload() {
     setLoading(true);
     const formData = new FormData();
     formData.append('File', file);
-    formData.append('FolderName', folderName);
+    formData.append('FolderName', 'Logo');
 
     try {
-      const response = await fetch('https://finalprojectt-001-site1.jtempurl.com/api/UploadFile/upload', {
+      const uploadResponse = await fetch('https://finalprojectt-001-site1.jtempurl.com/api/UploadFile/upload', {
         method: 'POST',
         body: formData,
       });
 
-      if (!response.ok) throw new Error('Fayl yüklənmədi!');
-      const result = await response.json();
+      if (!uploadResponse.ok) throw new Error('Fayl yüklənmədi!');
+      const result = await uploadResponse.json();
 
-      // Serverdən alınan imgUrl ilə tam URL yaradılır
-      const uploadedImageUrl = 'https://finalprojectt-001-site1.jtempurl.com/api/Logo' + result.imgUrl;
-      setImageUrl(uploadedImageUrl); // URL-i state-də saxlayırıq
+      const uploadedImageUrl = `https://finalprojectt-001-site1.jtempurl.com${result.imgUrl}`;
+      setImageUrl(uploadedImageUrl);
 
-      // Yeni şəkili siyahıya əlavə edin
-      setImageList([...imageList, { id: result.id, url: uploadedImageUrl }]);
+      // İkinci mərhələ: URL-i /api/Logo endpointinə göndəririk
+      const logoFormData = new FormData();
+      logoFormData.append('ImgUrl', result.imgUrl); // Sadece yolu göndəririk
 
-      // URL-i serverə göndəririk
-      await sendImageUrl(uploadedImageUrl); // URL göndəririk
+      const logoResponse = await fetch('https://finalprojectt-001-site1.jtempurl.com/api/Logo', {
+        method: 'POST',
+        body: logoFormData,
+      });
 
-      alert('Fayl uğurla yükləndi!');
+      if (!logoResponse.ok) throw new Error('Logo URL-i göndərilmədi!');
+      alert('Logo URL-i uğurla göndərildi!');
     } catch (error) {
-      console.error('Fayl yükləmə xətası:', error);
-      alert('Fayl yüklənməsi zamanı xəta baş verdi!');
+      console.error('Error:', error);
+      alert(error.message);
     } finally {
       setLoading(false);
-    }
-  };
-
-  // URL-i serverə göndərmək
-  const sendImageUrl = async (url) => {
-    try {
-      const token = localStorage.getItem('jwtToken'); // Token əlavə edin
-      const fileName = url.split('/').pop(); // Faylın adını çıxarın (məsələn: b463c01a-13dd-4c2f-96f7-84527b705d3cspotify.png)
-      const payload = { imgUrl: fileName }; // Göndərilən məlumatlar (API-nin gözlədiyi format)
-
-      console.log("Göndərilən məlumatlar:", payload); // Debugging üçün
-
-      const response = await fetch('https://finalprojectt-001-site1.jtempurl.com/api/Logo', {
-        method: 'POST', // URL-i göndərmək üçün POST istifadə edin
-        headers: {
-          'Authorization': `Bearer ${token}`, // Token əlavə edin
-          'Content-Type': 'application/json', // JSON formatında göndərin
-        },
-        body: JSON.stringify(payload), // Fayl adını JSON formatında göndərin
-      });
-
-      if (!response.ok) throw new Error('URL göndərilmədi!');
-      const result = await response.json();
-      console.log('URL serverə göndərildi:', result);
-    } catch (error) {
-      console.error('POST sorğusu xətası:', error);
-      alert('URL göndərilməsi zamanı xəta baş verdi!');
-    }
-  };
-
-  // Şəkili silmək funksiyası
-  const handleDelete = async (id) => {
-    try {
-      const token = localStorage.getItem('jwtToken'); // Token əlavə edin
-      const response = await fetch(`https://finalprojectt-001-site1.jtempurl.com/api/Logo/${id}`, {
-        method: 'DELETE', // Silmək üçün DELETE istifadə edin
-        headers: {
-          'Authorization': `Bearer ${token}`, // Token əlavə edin
-        },
-      });
-
-      if (!response.ok) throw new Error('Şəkil silinmədi!');
-      alert('Şəkil uğurla silindi!');
-
-      // Silinən şəkili siyahıdan çıxarın
-      setImageList(imageList.filter(image => image.id !== id));
-    } catch (error) {
-      console.error('Şəkil silinmə xətası:', error);
-      alert('Şəkil silinməsi zamanı xəta baş verdi!');
     }
   };
 
@@ -137,43 +64,20 @@ function Logoupload() {
             className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Qovluq adı:</label>
-          <select
-            value={folderName}
-            onChange={handleFolderNameChange}
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-          >
-            <option value="Logo">Logo</option>
-            {/* Əlavə qovluqlar burada seçilə bilər */}
-          </select>
-        </div>
         <button
           type="submit"
           disabled={loading}
           className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
         >
-          {loading ? 'Yüklənir...' : 'Yüklə'}
+          {loading ? 'Yüklənir...' : 'Yüklə və Göndər'}
         </button>
       </form>
-
-      {/* Yüklənən şəkilləri göstər */}
-      <div className="mt-6">
-        <h3 className="text-xl font-semibold mb-4">Yüklənən Şəkillər</h3>
-        {imageList.map((image) => (
-          <div key={image.id} className="flex items-center justify-between p-3 border rounded-lg mb-2">
-            <a href={image.url} target="_blank" rel="noopener noreferrer" className="text-blue-500 break-all">
-              {image.url}
-            </a>
-            <button
-              onClick={() => handleDelete(image.id)} // Şəkili sil
-              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-            >
-              Sil
-            </button>
-          </div>
-        ))}
-      </div>
+      {imageUrl && (
+        <div className="mt-4 p-2 bg-gray-100 border rounded-lg">
+          <p className="text-sm text-gray-600">Yüklənmiş Logo URL:</p>
+          <img src={imageUrl} alt="Uploaded Logo" className="rounded" />
+        </div>
+      )}
     </div>
   );
 }

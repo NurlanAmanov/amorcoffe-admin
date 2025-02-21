@@ -5,57 +5,36 @@ import axios from 'axios';
 function Productlist() {
     const { mehsul, setMehsul } = useContext(MEHSULLARLIST);
 
-    // 📌 Handle delete product
     const handleDelete = async (id) => {
+      await refreshProductList(); // İlk olaraq siyahını yeniləyin
       try {
-          // First, check if the image exists
-          const product = mehsul.find(item => item.id === id);  // Get the product from the list
+          const product = mehsul.find(item => item.id === id);
           if (!product) {
               alert("Məhsul tapılmadı!");
               return;
           }
-  
-          // If the product has an image, you can check if the image URL exists
-          const imgUrl = product.imgUrl;
-  
-          // You can check if the image exists by looking at the URL or set it to null
-          if (imgUrl && imgUrl !== '') {
-              console.log("Şəkil var, silinir:", imgUrl);
-          } else {
-              console.log("Şəkil yoxdur, yalnız məhsul silinir.");
-          }
-  
-          // Proceed with the DELETE request to remove the product from the server
+
           const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Product/${id}`);
-  
           if (response.status === 200) {
-              // Successfully deleted the product, now update the state
               const updatedProducts = mehsul.filter(product => product.id !== id);
               setMehsul(updatedProducts);
               alert('Məhsul uğurla silindi!');
-  
-              // Refresh the product list after deletion
-              await refreshProductList();
           } else {
-              alert('Məhsul silinərkən xəta baş verdi!');
+              throw new Error('Məhsul silinərkən xəta baş verdi!'); // Explicit error to catch
           }
       } catch (error) {
-         
-        }
+          alert(error.message); // Show custom error message
+      }
   };
-  
-  // Function to refresh the product list after deletion
+
   const refreshProductList = async () => {
       try {
           const response = await axios.get("https://finalprojectt-001-site1.jtempurl.com/api/Product");
-          setMehsul(response.data); // Update the mehsul state with the new product list
+          setMehsul(response.data);
       } catch (error) {
           console.error("Məhsul siyahısını yeniləməkdə xəta:", error);
-          alert("Məhsul siyahısını yeniləməkdə xəta baş verdi!");
       }
   };
-  
-  
   
 
     return (

@@ -18,6 +18,8 @@ import Adminhome from './component/Main-admin/Adminhome';
 import SocialMedia from './component/Main-admin/Socialmedia';
 import Silder from './component/Main-admin/Silder';
 import Promcode from './component/Main-admin/Promcode';
+import Productlists from './component/Product/Productlist';
+import Silderlist from './component/Main-admin/Silderlist';
 
 
 function App() {
@@ -56,11 +58,13 @@ function App() {
           <Route path="Slogan" element={<Slogan />} />
           <Route path="Variantsetting" element={<Variantsetting />} />
           <Route path="Logoupload" element={<Logoupload />} />
-          <Route path="Adminhome" element={<Adminhome />} />
+          <Route  index element={<Adminhome />} />
           <Route path="Variantsetting" element={<Variantsetting />} />
           <Route path="SocialMedia" element={<SocialMedia />} />
           <Route path="Silder" element={<Silder />} />
+          <Route path="Silderlist" element={<Silderlist />} />
           <Route path="Promakod" element={<Promcode />} />
+          <Route path="Promakodlist" element={<Productlists />} />
       
         </Route>
  

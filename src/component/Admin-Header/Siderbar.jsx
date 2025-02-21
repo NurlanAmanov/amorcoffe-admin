@@ -9,8 +9,7 @@ function Sidebar() {
     categories: false,
     products: false,
     settings: false,
-    refunds: false,
-    profile: false
+    sliders: false, // Slider dropdown əlavə edildi
   });
 
   const toggleDropdown = (menu) => {
@@ -24,16 +23,16 @@ function Sidebar() {
     <>
       <nav className="bg-[#121e31] h-[100vh] left-0 w-[250px] py-6 px-4 font-[sans-serif] tracking-wide overflow-auto">
         <ul className="space-y-3">
+          {/* Ana Səhifə */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
                onClick={() => toggleDropdown('home')}>
               <Link to="Adminhome">Ana Səhifə</Link>
               <span className="ml-auto">{dropdownOpen.home ? '-' : '+'}</span>
             </a>
-            {dropdownOpen.home && (
-              <div className="pl-4 text-gray-300">Ana Səhifə Detalları</div>
-            )}
           </li>
+
+          {/* İstifadəçilər */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-900 rounded px-4 py-3 transition-all"
                onClick={() => toggleDropdown('users')}>
@@ -42,20 +41,21 @@ function Sidebar() {
             </a>
             {dropdownOpen.users && (
               <ul className="pl-4 text-gray-300">
-              <Link to='users'>Siyahı</Link>
+                <Link to='users'>Siyahı</Link>
               </ul>
             )}
           </li>
+
+          {/* Satışlar */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
                onClick={() => toggleDropdown('sales')}>
               <span>Satışlar</span>
               <span className="ml-auto">{dropdownOpen.sales ? '-' : '+'}</span>
             </a>
-            {dropdownOpen.sales && (
-              <div className="pl-4 text-gray-300">Satış Detalları</div>
-            )}
           </li>
+
+          {/* Kateqoriyalar */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
                onClick={() => toggleDropdown('categories')}>
@@ -69,6 +69,8 @@ function Sidebar() {
               </ul>
             )}
           </li>
+
+          {/* Məhsullar */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded px-4 py-3 transition-all"
                onClick={() => toggleDropdown('products')}>
@@ -82,6 +84,8 @@ function Sidebar() {
               </ul>
             )}
           </li>
+
+          {/* Ayarlar */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center rounded px-4 py-2 transition-all"
                onClick={() => toggleDropdown('settings')}>
@@ -91,19 +95,30 @@ function Sidebar() {
             {dropdownOpen.settings && (
               <ul className="pl-4 py-3 flex flex-col space-y-5 text-gray-300">
                 <Link to="Headbanner">Headbanner</Link>
-                 <Link to="Slogan">Slogan</Link>
-                 <Link to="Tagadd">Taglar</Link>
-                 <Link to="Logoupload">Logo</Link>
-                 <Link to="SocialMedia">Socialmedia</Link>
-                 <Link to="Silder">Silder</Link>
-                 <Link to="Promakod">Promakod</Link>
+                <Link to="Slogan">Slogan</Link>
+                <Link to="Tagadd">Taglar</Link>
+                <Link to="Logoupload">Logo</Link>
+                <Link to="SocialMedia">Socialmedia</Link>
 
-                 <Link  to="Variantsetting">Məhsul ölçüləri</Link>
+                {/* SLIDER DROPDOWN */}
+                <a href="javascript:void(0)" className="text-white flex items-center rounded transition-all"
+                   onClick={() => toggleDropdown('sliders')}>
+                  Sliderlar
+                  <span className="ml-auto">{dropdownOpen.sliders ? '-' : '+'}</span>
+                </a>
+                {dropdownOpen.sliders && (
+                  <ul className="py-3 flex flex-col space-y-5 text-gray-300 pl-4">
+                    <Link to="Silder">Slider</Link>
+                    <Link to="Silderlist">Yüklənən Sliderlər</Link>
+                  </ul>
+                )}
+
+                <Link to="Promakod">Promakod</Link>
+                <Link to="Promakodlist">Yardılan Promakodlar</Link>
+                <Link to="Variantsetting">Məhsul ölçüləri</Link>
               </ul>
             )}
           </li>
-         
-         
         </ul>
       </nav>
     </>
