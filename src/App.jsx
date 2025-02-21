@@ -20,6 +20,7 @@ import Silder from './component/Main-admin/Silder';
 import Promcode from './component/Main-admin/Promcode';
 import Productlists from './component/Product/Productlist';
 import Silderlist from './component/Main-admin/Silderlist';
+import LogoList from './component/Main-admin/Logolist';
 
 
 function App() {
@@ -65,6 +66,7 @@ function App() {
           <Route path="Silderlist" element={<Silderlist />} />
           <Route path="Promakod" element={<Promcode />} />
           <Route path="Promakodlist" element={<Productlists />} />
+          <Route path="LogoList" element={<LogoList />} />
       
         </Route>
  

@@ -1,177 +1,104 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 
 function Adminhome() {
+  const [productCount, setProductCount] = useState(0);
+  const [categoryCount, setCategoryCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  const [promoCodeCount, setPromoCodeCount] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
+
+  const fetchDashboardStats = async () => {
+    try {
+      const [productRes, categoryRes, userRes, promoRes] = await Promise.all([
+        fetch('https://finalprojectt-001-site1.jtempurl.com/api/Product'),
+        fetch('https://finalprojectt-001-site1.jtempurl.com/api/Category'),
+        fetch('https://finalprojectt-001-site1.jtempurl.com/api/Auth'),
+        fetch('https://finalprojectt-001-site1.jtempurl.com/api/Promocode/all'),
+      ]);
+
+      if (!productRes.ok || !categoryRes.ok || !userRes.ok || !promoRes.ok) {
+        throw new Error('Failed to fetch data');
+      }
+
+      const [products, categories, users, promos] = await Promise.all([
+        productRes.json(),
+        categoryRes.json(),
+        userRes.json(),
+        promoRes.json(),
+      ]);
+
+      setProductCount(products.length);
+      setCategoryCount(categories.length);
+      setUserCount(users.length);
+      setPromoCodeCount(promos.length);
+    } catch (error) {
+      console.error('Error fetching dashboard stats:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
-    
-  <div className="content w-[85%] items-center justify-between mx-auto py-4 px-12 flex gap-5">
-  <div class="bg-[#0b1739] shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] p-6 w-[350px] mx-auto rounded-lg overflow-hidden">
-              <div class="inline-block bg-[#edf2f7] rounded-lg py-2 px-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 511.999 511.999">
-                  <path fill="#06d"
-                    d="m38.563 418.862 22.51 39.042c4.677 8.219 11.41 14.682 19.319 19.388l80.744-57.248.147-82.19-80.577-36.303L0 337.565c-.016 9.09 2.313 18.185 6.991 26.404z"
-                    data-original="#0066dd" />
-                  <path fill="#00ad3c"
-                    d="m256.293 173.808 4.212-107.064-84.604-32.663c-7.926 4.678-14.682 11.117-19.389 19.319L7.085 311.186C2.379 319.389.016 328.475 0 337.565l161.283.288z"
-                    data-original="#00ad3c" />
-                  <path fill="#00831e"
-                    d="m256.293 173.808 77.503-41.694 3.387-97.745c-7.909-4.706-16.996-7.068-26.379-7.085l-108.499-.194c-9.384-.017-18.479 2.606-26.405 6.991z"
-                    data-original="#00831e" />
-                  <path fill="#0084ff"
-                    d="m350.716 338.192-189.434-.338-80.89 139.438c7.909 4.706 16.996 7.068 26.379 7.085l297.933.532c9.384.017 18.479-2.606 26.405-6.991l.314-93.66z"
-                    data-original="#0084ff" />
-                  <path fill="#ff4131"
-                    d="M431.109 477.919c7.926-4.678 14.682-11.117 19.388-19.319l9.413-16.111 45.005-77.629c4.706-8.202 7.069-17.288 7.085-26.379l-93.221-49.051-67.768 48.764z"
-                    data-original="#ff4131" />
-                  <path fill="#ffba00"
-                    d="m430.756 182.917-74.253-129.16c-4.677-8.22-11.41-14.683-19.32-19.389l-80.891 139.439 94.423 164.385 160.99.288c.016-9.09-2.314-18.185-6.991-26.405z"
-                    data-original="#ffba00" />
-                </svg>
-              </div>
-  
-              <div class="mt-4">
-                <h3 class="text-xl font-bold text-white">Heading</h3>
-                <p class="mt-2 text-sm text-gray-300">Lorem ipsum dolor sit amet, consectetur.</p>
-              </div>
-  
-              <div class="mt-6">
-                <div class="flex mb-2">
-                  <p class="text-sm text-gray-300 flex-1">25 GB</p>
-                  <p class="text-sm text-gray-300">50 GB</p>
-                </div>
-                <div class="bg-gray-300 rounded-full w-full h-2.5">
-                  <div class="w-1/2 h-full rounded-full bg-[#017bfe] flex items-center">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="bg-[#0b1739] shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] p-6 w-[350px] mx-auto rounded-lg overflow-hidden">
-              <div class="inline-block bg-[#edf2f7] rounded-lg py-2 px-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 511.999 511.999">
-                  <path fill="#06d"
-                    d="m38.563 418.862 22.51 39.042c4.677 8.219 11.41 14.682 19.319 19.388l80.744-57.248.147-82.19-80.577-36.303L0 337.565c-.016 9.09 2.313 18.185 6.991 26.404z"
-                    data-original="#0066dd" />
-                  <path fill="#00ad3c"
-                    d="m256.293 173.808 4.212-107.064-84.604-32.663c-7.926 4.678-14.682 11.117-19.389 19.319L7.085 311.186C2.379 319.389.016 328.475 0 337.565l161.283.288z"
-                    data-original="#00ad3c" />
-                  <path fill="#00831e"
-                    d="m256.293 173.808 77.503-41.694 3.387-97.745c-7.909-4.706-16.996-7.068-26.379-7.085l-108.499-.194c-9.384-.017-18.479 2.606-26.405 6.991z"
-                    data-original="#00831e" />
-                  <path fill="#0084ff"
-                    d="m350.716 338.192-189.434-.338-80.89 139.438c7.909 4.706 16.996 7.068 26.379 7.085l297.933.532c9.384.017 18.479-2.606 26.405-6.991l.314-93.66z"
-                    data-original="#0084ff" />
-                  <path fill="#ff4131"
-                    d="M431.109 477.919c7.926-4.678 14.682-11.117 19.388-19.319l9.413-16.111 45.005-77.629c4.706-8.202 7.069-17.288 7.085-26.379l-93.221-49.051-67.768 48.764z"
-                    data-original="#ff4131" />
-                  <path fill="#ffba00"
-                    d="m430.756 182.917-74.253-129.16c-4.677-8.22-11.41-14.683-19.32-19.389l-80.891 139.439 94.423 164.385 160.99.288c.016-9.09-2.314-18.185-6.991-26.405z"
-                    data-original="#ffba00" />
-                </svg>
-              </div>
-  
-              <div class="mt-4">
-                <h3 class="text-xl font-bold text-white">Heading</h3>
-                <p class="mt-2 text-sm text-gray-300">Lorem ipsum dolor sit amet, consectetur.</p>
-              </div>
-  
-              <div class="mt-6">
-                <div class="flex mb-2">
-                  <p class="text-sm text-gray-300 flex-1">25 GB</p>
-                  <p class="text-sm text-gray-300">50 GB</p>
-                </div>
-                <div class="bg-gray-300 rounded-full w-full h-2.5">
-                  <div class="w-1/2 h-full rounded-full bg-[#017bfe] flex items-center">
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div className="max-w-7xl mx-auto mt-10 p-8 bg-gray-100 rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Dashboard</h1>
 
-
-            <div class="bg-[#0b1739] shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] p-6 w-[350px] mx-auto rounded-lg overflow-hidden">
-              <div class="inline-block bg-[#edf2f7] rounded-lg py-2 px-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 511.999 511.999">
-                  <path fill="#06d"
-                    d="m38.563 418.862 22.51 39.042c4.677 8.219 11.41 14.682 19.319 19.388l80.744-57.248.147-82.19-80.577-36.303L0 337.565c-.016 9.09 2.313 18.185 6.991 26.404z"
-                    data-original="#0066dd" />
-                  <path fill="#00ad3c"
-                    d="m256.293 173.808 4.212-107.064-84.604-32.663c-7.926 4.678-14.682 11.117-19.389 19.319L7.085 311.186C2.379 319.389.016 328.475 0 337.565l161.283.288z"
-                    data-original="#00ad3c" />
-                  <path fill="#00831e"
-                    d="m256.293 173.808 77.503-41.694 3.387-97.745c-7.909-4.706-16.996-7.068-26.379-7.085l-108.499-.194c-9.384-.017-18.479 2.606-26.405 6.991z"
-                    data-original="#00831e" />
-                  <path fill="#0084ff"
-                    d="m350.716 338.192-189.434-.338-80.89 139.438c7.909 4.706 16.996 7.068 26.379 7.085l297.933.532c9.384.017 18.479-2.606 26.405-6.991l.314-93.66z"
-                    data-original="#0084ff" />
-                  <path fill="#ff4131"
-                    d="M431.109 477.919c7.926-4.678 14.682-11.117 19.388-19.319l9.413-16.111 45.005-77.629c4.706-8.202 7.069-17.288 7.085-26.379l-93.221-49.051-67.768 48.764z"
-                    data-original="#ff4131" />
-                  <path fill="#ffba00"
-                    d="m430.756 182.917-74.253-129.16c-4.677-8.22-11.41-14.683-19.32-19.389l-80.891 139.439 94.423 164.385 160.99.288c.016-9.09-2.314-18.185-6.991-26.405z"
-                    data-original="#ffba00" />
-                </svg>
-              </div>
-  
-              <div class="mt-4">
-                <h3 class="text-xl font-bold text-white">Heading</h3>
-                <p class="mt-2 text-sm text-gray-300">Lorem ipsum dolor sit amet, consectetur.</p>
-              </div>
-  
-              <div class="mt-6">
-                <div class="flex mb-2">
-                  <p class="text-sm text-gray-300 flex-1">25 GB</p>
-                  <p class="text-sm text-gray-300">50 GB</p>
-                </div>
-                <div class="bg-gray-300 rounded-full w-full h-2.5">
-                  <div class="w-1/2 h-full rounded-full bg-[#017bfe] flex items-center">
-                  </div>
-                </div>
-              </div>
+      {loading ? (
+        <p className="text-center text-gray-500">Yüklənir...</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          {/* Məhsul Sayı */}
+          <div className="bg-blue-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold">Məhsul Sayı</h2>
+              <p className="text-4xl font-extrabold">{productCount}</p>
             </div>
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M3 3h18v18H3V3zm2 10h14M5 8h14m-7 10V8" />
+            </svg>
+          </div>
 
-
-            <div class="bg-[#0b1739] shadow-[0_4px_12px_-5px_rgba(0,0,0,0.4)] p-6 w-[350px] mx-auto rounded-lg overflow-hidden">
-              <div class="inline-block bg-[#edf2f7] rounded-lg py-2 px-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6" viewBox="0 0 511.999 511.999">
-                  <path fill="#06d"
-                    d="m38.563 418.862 22.51 39.042c4.677 8.219 11.41 14.682 19.319 19.388l80.744-57.248.147-82.19-80.577-36.303L0 337.565c-.016 9.09 2.313 18.185 6.991 26.404z"
-                    data-original="#0066dd" />
-                  <path fill="#00ad3c"
-                    d="m256.293 173.808 4.212-107.064-84.604-32.663c-7.926 4.678-14.682 11.117-19.389 19.319L7.085 311.186C2.379 319.389.016 328.475 0 337.565l161.283.288z"
-                    data-original="#00ad3c" />
-                  <path fill="#00831e"
-                    d="m256.293 173.808 77.503-41.694 3.387-97.745c-7.909-4.706-16.996-7.068-26.379-7.085l-108.499-.194c-9.384-.017-18.479 2.606-26.405 6.991z"
-                    data-original="#00831e" />
-                  <path fill="#0084ff"
-                    d="m350.716 338.192-189.434-.338-80.89 139.438c7.909 4.706 16.996 7.068 26.379 7.085l297.933.532c9.384.017 18.479-2.606 26.405-6.991l.314-93.66z"
-                    data-original="#0084ff" />
-                  <path fill="#ff4131"
-                    d="M431.109 477.919c7.926-4.678 14.682-11.117 19.388-19.319l9.413-16.111 45.005-77.629c4.706-8.202 7.069-17.288 7.085-26.379l-93.221-49.051-67.768 48.764z"
-                    data-original="#ff4131" />
-                  <path fill="#ffba00"
-                    d="m430.756 182.917-74.253-129.16c-4.677-8.22-11.41-14.683-19.32-19.389l-80.891 139.439 94.423 164.385 160.99.288c.016-9.09-2.314-18.185-6.991-26.405z"
-                    data-original="#ffba00" />
-                </svg>
-              </div>
-  
-              <div class="mt-4">
-                <h3 class="text-xl font-bold text-white">Heading</h3>
-                <p class="mt-2 text-sm text-gray-300">Lorem ipsum dolor sit amet, consectetur.</p>
-              </div>
-  
-              <div class="mt-6">
-                <div class="flex mb-2">
-                  <p class="text-sm text-gray-300 flex-1">25 GB</p>
-                  <p class="text-sm text-gray-300">50 GB</p>
-                </div>
-                <div class="bg-gray-300 rounded-full w-full h-2.5">
-                  <div class="w-1/2 h-full rounded-full bg-[#017bfe] flex items-center">
-                  </div>
-                </div>
-              </div>
+          {/* Kateqoriya Sayı */}
+          <div className="bg-green-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold">Kateqoriya Sayı</h2>
+              <p className="text-4xl font-extrabold">{categoryCount}</p>
             </div>
-  </div>
-    </>
-  )
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M3 3h18v18H3V3zm2 10h14M5 8h14m-7 10V8" />
+            </svg>
+          </div>
+
+          {/* İstifadəçi Sayı */}
+          <div className="bg-yellow-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold">İstifadəçi Sayı</h2>
+              <p className="text-4xl font-extrabold">{userCount}</p>
+            </div>
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M5 3h14v14H5zM3 21h18M8 17h8" />
+            </svg>
+          </div>
+
+          {/* Promo Kod Sayı */}
+          <div className="bg-purple-500 text-white p-6 rounded-lg shadow-md flex items-center justify-between">
+            <div>
+              <h2 className="text-xl font-bold">Promo Kod Sayı</h2>
+              <p className="text-4xl font-extrabold">{promoCodeCount}</p>
+            </div>
+            <svg className="w-12 h-12" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M3 7h18M3 12h18M3 17h18M6 5v14M18 5v14" />
+            </svg>
+          </div>
+
+        </div>
+      )}
+    </div>
+  );
 }
 
-export default Adminhome
+export default Adminhome;
