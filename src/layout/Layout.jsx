@@ -8,7 +8,7 @@ function Layout() {
   return (
     <>
     
-    <div className="flex items-start justify-center mx-auto w-full">
+    <div className="flex">
     <Siderbar/>
     <Outlet/>
     </div>

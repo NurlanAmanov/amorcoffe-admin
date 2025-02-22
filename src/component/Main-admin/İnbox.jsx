@@ -1,24 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
+import { ToastContainer, toast } from "react-toastify";
 
 function Inbox() {
   const [emails, setEmails] = useState([]);
   const [selectedEmail, setSelectedEmail] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("google_token") || null);
+  const [composeMode, setComposeMode] = useState(false);
+  const [emailData, setEmailData] = useState({ to: "", subject: "", message: "" });
 
-  // Google login funksiyası
+  // Google login funksiyası (Avtomatik giriş dəstəyi ilə)
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log("Login successful!", tokenResponse);
+      console.log("Google ilə uğurlu giriş!", tokenResponse);
+      localStorage.setItem("google_token", tokenResponse.access_token);
       setToken(tokenResponse.access_token);
       const messages = await fetchEmails(tokenResponse.access_token);
       setEmails(messages);
     },
     onError: (error) => {
-      console.error("Login failed:", error);
+      console.error("Giriş uğursuz oldu:", error);
     },
-    scope: "https://www.googleapis.com/auth/gmail.readonly",
+    scope: "https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send",
   });
+
+  // Avtomatik giriş (Əgər token varsa)
+  useEffect(() => {
+    if (token) {
+      fetchEmails(token);
+    }
+  }, [token]);
 
   // Gmail API-dan mesajları çəkmək
   const fetchEmails = async (accessToken) => {
@@ -35,7 +46,7 @@ function Inbox() {
       const data = await response.json();
 
       if (!data.messages) {
-        console.log("No messages found.");
+        console.log("Mesaj tapılmadı.");
         return [];
       }
 
@@ -46,10 +57,9 @@ function Inbox() {
         })
       );
 
-      return detailedMessages;
+      setEmails(detailedMessages);
     } catch (error) {
-      console.error("Error fetching emails:", error);
-      return [];
+      console.error("Mesajları çəkmək mümkün olmadı:", error);
     }
   };
 
@@ -75,31 +85,82 @@ function Inbox() {
 
       return {
         id: messageId,
-        subject: subjectHeader ? subjectHeader.value : "(No Subject)",
-        from: fromHeader ? fromHeader.value : "(Unknown Sender)",
-        body: data.snippet, // Mesajın qısa versiyası
+        subject: subjectHeader ? subjectHeader.value : "(Mövzu yoxdur)",
+        from: fromHeader ? fromHeader.value : "(Naməlum göndərən)",
+        body: data.snippet,
       };
     } catch (error) {
-      console.error("Error fetching email details:", error);
+      console.error("Mesaj detallarını çəkmək mümkün olmadı:", error);
       return {
         id: messageId,
-        subject: "(Error loading message)",
-        from: "(Unknown Sender)",
-        body: "(No Content)",
+        subject: "(Xəta baş verdi)",
+        from: "(Naməlum göndərən)",
+        body: "(Məzmun mövcud deyil)",
       };
     }
   };
 
+  // E-mail göndərmək funksiyası
+  const sendEmail = async () => {
+    try {
+      const emailContent = `To: ${emailData.to}\r\nSubject: ${emailData.subject}\r\n\r\n${emailData.message}`;
+      const encodedMessage = btoa(emailContent).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+      const response = await fetch(
+        "https://www.googleapis.com/gmail/v1/users/me/messages/send",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            raw: encodedMessage,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        toast.success("Mesaj uğurla göndərildi! 🚀");
+        setComposeMode(false);
+      } else {
+        toast.error("Mesaj göndərmək mümkün olmadı. ❌");
+      }
+    } catch (error) {
+      console.error("Mesaj göndərmək mümkün olmadı:", error);
+      toast.error("Xəta baş verdi.");
+    }
+  };
+
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-gray-50">
+      <ToastContainer />
       {/* Sidebar */}
-      <div className="w-64 bg-gray-100 p-4">
-        <h2 className="text-lg font-semibold">Inbox</h2>
+      <div className="w-64 bg-white shadow-md p-4 flex flex-col">
+        <h2 className="text-lg font-semibold text-blue-600">Gələnlər qutusu</h2>
+        {!token ? (
+          <button
+            className="w-full bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-blue-600 transition"
+            onClick={() => login()}
+          >
+            Google ilə giriş et
+          </button>
+        ) : (
+          <button
+            className="w-full bg-red-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-red-600 transition"
+            onClick={() => {
+              localStorage.removeItem("google_token");
+              setToken(null);
+            }}
+          >
+            Çıxış et
+          </button>
+        )}
         <button
-          className="w-full bg-blue-500 text-white px-4 py-2 mt-4 rounded"
-          onClick={() => login()}
+          className="w-full bg-green-500 text-white px-4 py-2 mt-4 rounded-lg hover:bg-green-600 transition"
+          onClick={() => setComposeMode(true)}
         >
-          Login with Google
+          Yeni mesaj yaz ✉️
         </button>
       </div>
 
@@ -119,22 +180,28 @@ function Inbox() {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500">No emails to display.</p>
+          <p className="text-center text-gray-500">Gələn mesaj yoxdur.</p>
         )}
       </div>
 
-      {/* Email Details */}
+      {/* Email Details & Compose Email */}
       <div className="flex-1 p-4">
-        {selectedEmail ? (
+        {composeMode ? (
+          <div className="p-4 bg-white shadow-lg rounded-lg">
+            <h2 className="text-lg font-semibold mb-4">Yeni mesaj yaz ✉️</h2>
+            <input type="email" placeholder="Kimə" className="w-full p-2 mb-2 border rounded-lg" value={emailData.to} onChange={(e) => setEmailData({ ...emailData, to: e.target.value })}/>
+            <input type="text" placeholder="Mövzu" className="w-full p-2 mb-2 border rounded-lg" value={emailData.subject} onChange={(e) => setEmailData({ ...emailData, subject: e.target.value })}/>
+            <textarea placeholder="Mesaj" className="w-full p-2 mb-2 border rounded-lg" value={emailData.message} onChange={(e) => setEmailData({ ...emailData, message: e.target.value })}/>
+            <button onClick={sendEmail} className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Göndər 🚀</button>
+          </div>
+        ) : selectedEmail ? (
           <div>
             <h2 className="text-xl font-semibold">{selectedEmail.subject}</h2>
-            <h3 className="text-gray-600 mb-2">From: {selectedEmail.from}</h3>
+            <h3 className="text-gray-600 mb-2">Kimdən: {selectedEmail.from}</h3>
             <p className="text-gray-800">{selectedEmail.body}</p>
           </div>
         ) : (
-          <p className="text-center text-gray-500">
-            Select an email to read its details.
-          </p>
+          <p className="text-center text-gray-500">Mesajı seçin.</p>
         )}
       </div>
     </div>

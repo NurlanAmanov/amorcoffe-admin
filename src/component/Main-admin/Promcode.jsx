@@ -49,11 +49,11 @@ function Promcode() {
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Create Promocode</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Promocod yarad</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700">Code:</label>
+          <label className="block text-sm font-medium text-gray-700">Kod:</label>
           <input
             type="text"
             value={code}
@@ -64,7 +64,7 @@ function Promcode() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Discount Percentage:</label>
+          <label className="block text-sm font-medium text-gray-700">Ediləcək endirim:</label>
           <input
             type="number"
             value={discountPercentage}
@@ -75,7 +75,7 @@ function Promcode() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Expiration Date:</label>
+          <label className="block text-sm font-medium text-gray-700">İstifadə müddəti:</label>
           <input
             type="datetime-local"
             value={expirationDate}
@@ -86,7 +86,7 @@ function Promcode() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">Is Active:</label>
+          <label className="block text-sm font-medium text-gray-700">Akivlik statusu:</label>
           <select
             value={isActive}
             onChange={(e) => setIsActive(e.target.value === 'true')}
@@ -99,7 +99,7 @@ function Promcode() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">App User Name:</label>
+          <label className="block text-sm font-medium text-gray-700">Veriləcək İstifadəçi:</label>
           <input
             type="text"
             value={appUserName}
@@ -114,7 +114,7 @@ function Promcode() {
           disabled={loading}
           className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
         >
-          {loading ? 'Creating Promocode...' : 'Create Promocode'}
+          {loading ? 'Promocod yaradılır...' : ' Promocodu Yarad'}
         </button>
       </form>
     </div>

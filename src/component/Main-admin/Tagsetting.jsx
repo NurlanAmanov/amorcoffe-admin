@@ -72,7 +72,7 @@ function Tagsetting() {
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Tag Settings</h2>
+      <h2 className="text-2xl font-bold mb-4 text-center">Tag Elavə et</h2>
 
       {/* Form to create a new tag */}
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -96,7 +96,7 @@ function Tagsetting() {
 
       {/* List of existing tags */}
       <div className="mt-6">
-        <h3 className="text-xl font-semibold">Existing Tags</h3>
+        <h3 className="text-xl font-semibold">Yardılan taglar</h3>
         <ul className="space-y-2 mt-4">
           {tags.map((tag) => (
             <li key={tag.id} className="flex justify-between items-center">
@@ -105,7 +105,7 @@ function Tagsetting() {
                 onClick={() => handleDelete(tag.id)}
                 className="text-red-500 hover:text-red-700"
               >
-                Delete
+                Sil
               </button>
             </li>
           ))}

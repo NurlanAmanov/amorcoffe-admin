@@ -76,7 +76,7 @@ function Slogan() {
         </div>
       </form>
 
-      <h2 className="text-2xl font-bold mt-8">Slogan List</h2>
+      <h2 className="text-2xl font-bold mt-8">Yardılan sloganlar</h2>
       <ul className="mt-4">
         {slogans.length > 0 ? (
           slogans.map((slogan) => (
