@@ -9,6 +9,7 @@ export const CustomAuthProvider = ({ children }) => {  // ✅ Yeni ad: CustomAut
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
+
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -28,7 +29,7 @@ export const CustomAuthProvider = ({ children }) => {  // ✅ Yeni ad: CustomAut
                 localStorage.setItem("token", data);
                 setUser({ token: data });
               
-                navigate("/users");
+                navigate("/");
             } else {
                 throw new Error("Token qayt-arılmadı!");
             }

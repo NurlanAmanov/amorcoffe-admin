@@ -6,7 +6,7 @@ function Promcode() {
   const [discountPercentage, setDiscountPercentage] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [isActive, setIsActive] = useState(true);
-  const [appUserId, setAppUserId] = useState('');
+  const [appUserName, setAppUserName] = useState(''); // AppUserId → AppUserName
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (event) => {
@@ -18,7 +18,7 @@ function Promcode() {
     formData.append('DiscountPercentage', discountPercentage);
     formData.append('ExpirationDate', expirationDate); // Date format should be ISO 8601
     formData.append('IsActive', isActive);
-    formData.append('AppUserId', appUserId);
+    formData.append('AppUserName', appUserName); // AppUserId → AppUserName
 
     try {
       const response = await axios.post(
@@ -37,7 +37,7 @@ function Promcode() {
         setDiscountPercentage('');
         setExpirationDate('');
         setIsActive(true);
-        setAppUserId('');
+        setAppUserName(''); // Reset AppUserName
       }
     } catch (error) {
       console.error('Error creating promocode:', error);
@@ -99,11 +99,11 @@ function Promcode() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700">App User ID:</label>
+          <label className="block text-sm font-medium text-gray-700">App User Name:</label>
           <input
             type="text"
-            value={appUserId}
-            onChange={(e) => setAppUserId(e.target.value)}
+            value={appUserName}
+            onChange={(e) => setAppUserName(e.target.value)}
             className="w-full px-4 py-2 border rounded-lg"
             required
           />

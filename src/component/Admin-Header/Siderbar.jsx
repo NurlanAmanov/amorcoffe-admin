@@ -31,7 +31,11 @@ function Sidebar() {
               🏠 Ana Səhifə
             </Link>
           </li>
-
+          <li>
+            <Link to="inbox" className="text-white text-sm flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all">
+               📥 İnbox
+            </Link>
+          </li>
           {/* İstifadəçilər */}
           <li>
             <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-900 rounded-lg px-4 py-3 transition-all"
@@ -112,7 +116,7 @@ function Sidebar() {
                 {dropdownOpen.promokods && (
                   <ul className="py-3 flex flex-col space-y-2 text-gray-300 pl-4">
                     <Link to="Promakod" className="hover:text-white">Promokod</Link>
-                    <Link to="Promakodlist" className="hover:text-white">Yaradılan Promokodlar</Link>
+                    <Link to="Promkodlist" className="hover:text-white">Yaradılan Promokodlar</Link>
                   </ul>
                 )}
 

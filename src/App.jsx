@@ -18,9 +18,11 @@ import Adminhome from './component/Main-admin/Adminhome';
 import SocialMedia from './component/Main-admin/Socialmedia';
 import Silder from './component/Main-admin/Silder';
 import Promcode from './component/Main-admin/Promcode';
-import Productlists from './component/Product/Productlist';
+
 import Silderlist from './component/Main-admin/Silderlist';
 import LogoList from './component/Main-admin/Logolist';
+import Listpromkod from './component/Main-admin/Promkodlist';
+import Inbox from './component/Main-admin/İnbox';
 
 
 function App() {
@@ -30,18 +32,36 @@ function App() {
 <>
 
 {/* <Routes>
-      {!isAuthenticated ? (
-        <Route path="*" element={<Loginadmin setIsAuthenticated={setIsAuthenticated} />} />
-      ) : (
-        <Route path="/" element={<Layout />}>
-          <Route path="users" element={<Userlist />} />
-          <Route path="addmehsul" element={<AddProduct />} />
-          <Route path="Productlist" element={<Productlist />} />
-          <Route path="Categoryalist" element={<Categoryalist />} />
-          <Route path="AddPromoCode" element={<AddPromoCode />} />
-        </Route>
-      )}
-    </Routes> */}
+     
+     {!isAuthenticated ? (
+       <Route
+         path="*"
+         element={<Loginadmin setIsAuthenticated={setIsAuthenticated} />}
+       />
+     ) : (
+
+       <Route path="/" element={<Layout />}>
+         <Route index element={<Adminhome />} />
+         <Route path="users" element={<Userlist />} />
+         <Route path="addmehsul" element={<AddProduct />} />
+         <Route path="Productlist" element={<Productlist />} />
+         <Route path="Categoryalist" element={<Categoryalist />} />
+         <Route path="AddPromoCode" element={<AddPromoCode />} />
+         <Route path="Categoryadd" element={<Categoryadd />} />
+         <Route path="Headbanner" element={<Headbanner />} />
+         <Route path="Tagadd" element={<Tagsetting />} />
+         <Route path="Slogan" element={<Slogan />} />
+         <Route path="Variantsetting" element={<Variantsetting />} />
+         <Route path="Logoupload" element={<Logoupload />} />
+         <Route path="SocialMedia" element={<SocialMedia />} />
+         <Route path="Silder" element={<Silder />} />
+         <Route path="Silderlist" element={<Silderlist />} />
+         <Route path="Promakod" element={<Promcode />} />
+         <Route path="Promkodlist" element={<Listpromkod />} />
+         <Route path="LogoList" element={<LogoList />} />
+       </Route>
+     )}
+   </Routes> */}
 
 <Routes>
     
@@ -65,8 +85,9 @@ function App() {
           <Route path="Silder" element={<Silder />} />
           <Route path="Silderlist" element={<Silderlist />} />
           <Route path="Promakod" element={<Promcode />} />
-          <Route path="Promakodlist" element={<Productlists />} />
+          <Route path="Promkodlist" element={<Listpromkod />} />
           <Route path="LogoList" element={<LogoList />} />
+          <Route path="inbox" element={<Inbox />} />
       
         </Route>
  

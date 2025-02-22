@@ -1,123 +1,100 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function Promcodlist() {
-  const [code, setCode] = useState('');
-  const [discountPercentage, setDiscountPercentage] = useState('');
-  const [expirationDate, setExpirationDate] = useState('');
-  const [isActive, setIsActive] = useState(true);
-  const [appUserId, setAppUserId] = useState('');
+function Listpromkod() {
   const [loading, setLoading] = useState(false);
-  const [promocodes, setPromocodes] = useState([]); // Promo kodlarını saxlamaq üçün state
+  const [promocodes, setPromocodes] = useState([]);
 
   useEffect(() => {
-    const fetchPromocodes = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get('https://finalprojectt-001-site1.jtempurl.com/api/Promocode/all');
-        setPromocodes(response.data);
-      } catch (error) {
-        console.error('Promo kodlarını yükləyərkən xəta baş verdi:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchPromocodes();
   }, []);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  // Promo kodları serverdən əldə et
+  const fetchPromocodes = async () => {
     setLoading(true);
-
-    const formData = new FormData();
-    formData.append('Code', code);
-    formData.append('DiscountPercentage', discountPercentage);
-    formData.append('ExpirationDate', expirationDate);
-    formData.append('IsActive', isActive);
-    formData.append('AppUserId', appUserId);
-
     try {
-      const response = await axios.post(
-        'https://finalprojectt-001-site1.jtempurl.com/api/Promocode/create',
-        formData,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        }
-      );
-
-      if (response.status === 200) {
-        alert('Promocode successfully created!');
-        setCode('');
-        setDiscountPercentage('');
-        setExpirationDate('');
-        setIsActive(true);
-        setAppUserId('');
-        setPromocodes([...promocodes, response.data]); // Yeni promo kodu siyahıya əlavə edin
+      const response = await axios.get('https://finalprojectt-001-site1.jtempurl.com/api/Promocode/all');
+      
+      console.log("API Response:", response.data); // Gələn cavabı yoxla
+      if (Array.isArray(response.data)) {
+        setPromocodes(response.data);
+      } else {
+        console.error("Unexpected response format:", response.data);
+        alert("Serverdən düzgün cavab gəlmir.");
       }
     } catch (error) {
-      console.error('Promocode yaradarkən xəta:', error);
-      alert('Error creating promocode!');
+      console.error('Promo kodları yükləyərkən xəta baş verdi:', error);
+      alert('Promo kodları yükləmək mümkün olmadı.');
     } finally {
       setLoading(false);
     }
   };
 
-  return (
-    <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Create Promocode</h2>
+  // Promo kodu silmək üçün funksiyanı yazırıq
+  const handleDelete = async (id) => {
+    if (window.confirm('Bu promo kodu silmək istəyirsiniz?')) {
+      try {
+        const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/Promocode/${id}`);
+        if (response.status === 200) {
+          alert('Promo kodu uğurla silindi!');
+          // Silindikdən sonra siyahını yeniləyirik
+          setPromocodes(promocodes.filter((promo) => promo.id !== id));
+        }
+      } catch (error) {
+        console.error('Promo kodu silərkən xəta baş verdi:', error);
+        alert('Promo kodunu silmək mümkün olmadı.');
+      }
+    }
+  };
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Form input elements are here */}
-      </form>
+  return (
+    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+      <h2 className="text-2xl font-bold mb-4 text-center">Promo Kodlar Siyahısı</h2>
 
       {loading ? (
-        <div>Loading promocodes...</div>
+        <p className="text-center text-gray-500">Yüklənir...</p>
       ) : (
-        <div>
-          <h3 className="text-xl font-bold my-4">Promocodes List</h3>
-          <table className="min-w-full leading-normal">
-            <thead>
-              <tr>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Code
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Discount Percentage
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Expiration Date
-                </th>
-                <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                  Active
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {promocodes.map((promo) => (
+        <table className="min-w-full border border-gray-200 divide-y divide-gray-200">
+          <thead className="bg-gray-100">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kod</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Endirim (%)</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bitmə Tarixi</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Aktiv</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Əməliyyatlar</th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {promocodes.length > 0 ? (
+              promocodes.map((promo) => (
                 <tr key={promo.id}>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {promo.code}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {promo.discountPercentage}%
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {promo.expirationDate}
-                  </td>
-                  <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                    {promo.isActive ? 'Yes' : 'No'}
+                  <td className="px-6 py-4 whitespace-nowrap">{promo.code}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{promo.discountPercentage}%</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{promo.expirationDate}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{promo.isActive ? '✔️ Bəli' : '❌ Xeyr'}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => handleDelete(promo.id)} // Silmək əmri
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Sil
+                    </button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
+                  Heç bir promo kod tapılmadı.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
       )}
     </div>
   );
 }
 
-export default Promcodlist;
+export default Listpromkod
+;
