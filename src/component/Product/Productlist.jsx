@@ -40,7 +40,7 @@ function Productlist() {
     return (
         <>
             <div className="font-[sans-serif] overflow-x-auto w-full">
-                <table className="min-w-full bg-white">
+                <table className=" bg-white">
                     <thead className="bg-gray-800 whitespace-nowrap">
                         <tr>
                             <th className="p-4 text-left text-sm font-medium text-white">Məhsulun Şəkili</th>

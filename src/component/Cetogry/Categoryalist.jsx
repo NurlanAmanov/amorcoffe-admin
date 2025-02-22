@@ -43,8 +43,8 @@ function Categoryalist() {
   }
 
   return (
-    <div className="font-[sans-serif] mx-auto overflow-x-auto">
-      <table className="min-w-full bg-white">
+    <div className="font-[sans-serif] w-full mx-auto overflow-x-auto">
+      <table className=" bg-white mx-auto w-full">
         <thead className="bg-gray-800 whitespace-nowrap">
           <tr>
             <th className="p-4 text-left text-sm font-medium text-white">Məhsulun Şəkili</th>
