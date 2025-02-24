@@ -138,7 +138,6 @@ function AddProduct() {
     const productData = new FormData();
     productData.append("Title", formData.title);
     productData.append("Description", formData.description);
-    productData.append("About", formData.about);
     productData.append("Price", formData.price);
     productData.append("Discount", formData.discount);
     productData.append("FinalPrice", formData.finalPrice);
@@ -178,7 +177,7 @@ function AddProduct() {
       setFormData({
         title: "",
         description: "",
-        about: "",
+     
         price: 0,
         discount: 0,
         finalPrice: 0,
@@ -219,14 +218,7 @@ function AddProduct() {
           onChange={handleChange}
           className="w-full px-4 py-2 border rounded-lg"
         />
-        <input
-          type="text"
-          name="about"
-          placeholder="Haqqında"
-          value={formData.about}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
-        />
+        
         <input
           type="number"
           name="price"

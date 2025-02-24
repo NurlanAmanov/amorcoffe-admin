@@ -23,6 +23,7 @@ import Silderlist from './component/Main-admin/Silderlist';
 import LogoList from './component/Main-admin/Logolist';
 import Listpromkod from './component/Main-admin/Promkodlist';
 import Inbox from './component/Main-admin/İnbox';
+import Notfaciton from './component/Main-admin/Notfaciton';
 
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
           <Route path="Promkodlist" element={<Listpromkod />} />
           <Route path="LogoList" element={<LogoList />} />
           <Route path="inbox" element={<Inbox />} />
+          <Route path="notfaciton" element={<Notfaciton />} />
       
         </Route>
  
