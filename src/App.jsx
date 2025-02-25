@@ -6,7 +6,7 @@ import Productlist from './component/Product/Productlist';
 import AddProduct from './component/Product/Addproduct';
 import Categoryalist from './component/Cetogry/Categoryalist';
 import AddPromoCode from './component/Main-admin/Usersetting';
-import Loginadmin from './component/Main-admin/Loginadmin';
+
 import Categoryadd from './component/Cetogry/Categoryadd';
 import Headbanner from './component/siteayarlar/Headbanner';
 import Slogan from './component/Main-admin/Slogan';
@@ -24,6 +24,8 @@ import LogoList from './component/Main-admin/Logolist';
 import Listpromkod from './component/Main-admin/Promkodlist';
 import Inbox from './component/Main-admin/İnbox';
 import Notfaciton from './component/Main-admin/Notfaciton';
+import Calendar from './component/Main-admin/Calendar';
+
 
 
 function App() {
@@ -90,6 +92,7 @@ function App() {
           <Route path="LogoList" element={<LogoList />} />
           <Route path="inbox" element={<Inbox />} />
           <Route path="notfaciton" element={<Notfaciton />} />
+          <Route path="calendar" element={<Calendar />} />
       
         </Route>
  

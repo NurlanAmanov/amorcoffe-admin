@@ -15,7 +15,7 @@ function Sidebar() {
     logos: false,
   });
 
-  const [notifications, setNotifications] = useState([]);  // Bildirişləri saxlayırıq
+  const [notifications, setNotifications] = useState([]);
 
   const toggleDropdown = (menu) => {
     setDropdownOpen(prev => ({
@@ -24,14 +24,13 @@ function Sidebar() {
     }));
   };
 
-  // Bildirişləri API-dən çəkirik
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
           'https://finalprojectt-001-site1.jtempurl.com/api/Contact?limit=30'
         );
-        setNotifications(response.data);  // Bildirişləri state-ə yükləyirik
+        setNotifications(response.data);
       } catch (error) {
         console.error('Xəta baş verdi:', error);
       }
@@ -41,127 +40,133 @@ function Sidebar() {
   }, []);
 
   return (
-    <nav className="bg-[#121e31] h-[100vh] left-0 w-[260px] py-6 px-4 font-[sans-serif] tracking-wide overflow-auto shadow-lg">
-      <ul className="space-y-3">
-        {/* Ana Səhifə */}
+    <nav className="bg-[#1A202C] w-[260px]  py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300">
+      <ul className="space-y-6">
+        {/* Home */}
         <li>
-          <Link to="/" className="text-white text-sm flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all">
-            🏠 Ana Səhifə
+          <Link to="/" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
+            🏠 <span className="ml-3">Ana Səhifə</span>
           </Link>
         </li>
-        {/* İnbox */}
+
+        {/* Inbox */}
         <li>
-          <Link
-            to="inbox"
-            className="text-white text-sm flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all"
-          >
-            📥 İnbox
-          
+          <Link to="inbox" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
+            📥 <span className="ml-3">İnbox</span>
           </Link>
         </li>
-        {/* Bildirişlər */}
+
+        {/* Calendar */}
         <li>
-          <Link to="notfaciton" className="text-white text-sm flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all">
-            📥 Bildirişlər
+          <Link to="calendar" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
+            📅 <span className="ml-3">Təqvim</span>
+          </Link>
+        </li>
+
+        {/* Notifications */}
+        <li>
+          <Link to="notifications" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
+            📥 <span className="ml-3">Bildirişlər</span>
             {notifications.length > 0 && (
               <span className="ml-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
-                {notifications.length} {/* Bildiriş sayını göstəririk */}
+                {notifications.length}
               </span>
             )}
           </Link>
         </li>
-        {/* İstifadəçilər */}
+
+        {/* Users */}
         <li>
-          <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-900 rounded-lg px-4 py-3 transition-all"
+          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-800 rounded-lg px-4 py-3 transition-all duration-300"
              onClick={() => toggleDropdown('users')}>
-            👤 İstifadəçilər
+            👤 <span className="ml-3">İstifadəçilər</span>
             <span className="ml-auto">{dropdownOpen.users ? '-' : '+'}</span>
           </a>
           {dropdownOpen.users && (
-            <ul className="pl-4 text-gray-300 space-y-2">
+            <ul className="pl-8 text-gray-300 space-y-2">
               <Link to="users" className="hover:text-white">Siyahı</Link>
             </ul>
           )}
         </li>
 
-        {/* Kateqoriyalar */}
+        {/* Categories */}
         <li>
-          <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all"
+          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
              onClick={() => toggleDropdown('categories')}>
-            📂 Kateqoriyalar
+            📂 <span className="ml-3">Kateqoriyalar</span>
             <span className="ml-auto">{dropdownOpen.categories ? '-' : '+'}</span>
           </a>
           {dropdownOpen.categories && (
-            <ul className="pl-4 text-gray-300 space-y-4 flex flex-col">
+            <ul className="pl-8 text-gray-300 space-y-4">
               <Link to="Categoryalist" className="hover:text-white">Kateqoriya Siyahısı</Link>
               <Link to="Categoryadd" className="hover:text-white">Yeni Kateqoriya Əlavə Et</Link>
             </ul>
           )}
         </li>
 
-        {/* Məhsullar */}
+        {/* Products */}
         <li>
-          <a href="javascript:void(0)" className="text-white text-sm flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all"
+          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
              onClick={() => toggleDropdown('products')}>
-            🛍 Məhsullar
+            🛍 <span className="ml-3">Məhsullar</span>
             <span className="ml-auto">{dropdownOpen.products ? '-' : '+'}</span>
           </a>
           {dropdownOpen.products && (
-            <ul className="pl-4 text-gray-300 space-y-2">
+            <ul className="pl-8 text-gray-300 space-y-2">
               <Link to="Productlist" className="hover:text-white">Məhsul Siyahısı</Link>
               <Link to="addmehsul" className="hover:text-white">Yeni Məhsul Əlavə Et</Link>
             </ul>
           )}
         </li>
 
-        {/* Ayarlar */}
+        {/* Settings */}
         <li>
-          <a href="javascript:void(0)" className="text-white text-sm flex items-center rounded-lg px-4 py-2 transition-all"
+          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
              onClick={() => toggleDropdown('settings')}>
-            ⚙ Ayarlar
+            ⚙ <span className="ml-3">Ayarlar</span>
             <span className="ml-auto">{dropdownOpen.settings ? '-' : '+'}</span>
           </a>
           {dropdownOpen.settings && (
-            <ul className="pl-4 py-3 flex flex-col space-y-3 text-gray-300">
+            <ul className="pl-8 text-gray-300 space-y-3 flex flex-col">
               <Link to="Headbanner" className="hover:text-white">Headbanner</Link>
               <Link to="Slogan" className="hover:text-white">Slogan</Link>
               <Link to="Tagadd" className="hover:text-white">Taglar</Link>
               <Link to="SocialMedia" className="hover:text-white">Socialmedia</Link>
 
-              {/* SLIDER DROP-DOWN */}
-              <a href="javascript:void(0)" className="text-white flex items-center rounded-lg transition-all"
+              {/* Slider Dropdown */}
+              <a href="javascript:void(0)" className="flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
                  onClick={() => toggleDropdown('sliders')}>
-                🎞 Sliderlar
+                🎞 <span className="ml-3">Sliderlar</span>
                 <span className="ml-auto">{dropdownOpen.sliders ? '-' : '+'}</span>
               </a>
               {dropdownOpen.sliders && (
-                <ul className="py-3 flex flex-col space-y-4 text-gray-300 pl-4">
+                <ul className="pl-8 text-gray-300 space-y-4">
                   <Link to="Silder" className="hover:text-white">Slider</Link>
                   <Link to="Silderlist" className="hover:text-white">Yüklənən Sliderlər</Link>
                 </ul>
               )}
 
-              {/* PROMOKOD DROP-DOWN */}
-              <a href="javascript:void(0)" className="text-white flex items-center rounded-lg transition-all"
+              {/* Promo Code Dropdown */}
+              <a href="javascript:void(0)" className="flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
                  onClick={() => toggleDropdown('promokods')}>
-                🎟 Promokodlar
+                🎟 <span className="ml-3">Promokodlar</span>
                 <span className="ml-auto">{dropdownOpen.promokods ? '-' : '+'}</span>
               </a>
               {dropdownOpen.promokods && (
-                <ul className="py-3 flex flex-col space-y-2 text-gray-300 pl-4">
+                <ul className="pl-8 text-gray-300 space-y-2">
                   <Link to="Promakod" className="hover:text-white">Promokod</Link>
                   <Link to="Promkodlist" className="hover:text-white">Yaradılan Promokodlar</Link>
                 </ul>
               )}
 
-              {/* LOGO DROP-DOWN */}
-              <a href="javascript:void(0)" className="text-white flex items-center rounded-lg transition-all"
+              {/* Logo Dropdown */}
+              <a href="javascript:void(0)" className="flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
                  onClick={() => toggleDropdown('logos')}>
-                🖼 Logolar
+                🖼 <span className="ml-3">Logolar</span>
                 <span className="ml-auto">{dropdownOpen.logos ? '-' : '+'}</span>
               </a>
               {dropdownOpen.logos && (
-                <ul className="py-3 flex flex-col space-y-4 text-gray-300 pl-4">
+                <ul className="pl-8 text-gray-300 space-y-4">
                   <Link to="Logoupload" className="hover:text-white">Logo Yüklə</Link>
                   <Link to="LogoList" className="hover:text-white">Yüklənmiş Logolar</Link>
                 </ul>
