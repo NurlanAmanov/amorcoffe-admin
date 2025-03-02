@@ -62,7 +62,7 @@ function Siderbar() {
         )}
       </button>
 
-      <nav className={`bg-gradient-to-b from-indigo-900 to-[#1A202C] ${sidebarCollapsed ? 'w-20' : 'w-[260px]'} h-[100vh] py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300`}>
+      <nav className={`bg-gradient-to-b from-indigo-900 to-[#1A202C] ${sidebarCollapsed ? 'w-20' : 'w-[260px]'} h-full min-h-screen py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300`}>
         {/* Logo/brand area */}
         <div className="flex items-center justify-center mb-8">
           {sidebarCollapsed ? (
