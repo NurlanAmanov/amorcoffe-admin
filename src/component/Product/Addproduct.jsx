@@ -199,49 +199,63 @@ function AddProduct() {
 
   return (
     <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-      <h2 className="text-2xl font-bold mb-4 text-center">Yeni Məhsul Əlavə Et</h2>
+      <h2 className="text-2md font-bold mb-4 text-center">Yeni Məhsul Əlavə Et</h2>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        <input
+  <label className="pb-2 text-md" >
+Başlıq
+  <input
           type="text"
           name="title"
           placeholder="Başlıq"
           value={formData.title}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
+          className="w-full px-4 py-2 my-2 border rounded-lg"
         />
-        <input
+  </label>
+       <label  className="pb-2 text-md" > Təsiv
+       <input
           type="text"
           name="description"
           placeholder="Təsvir"
           value={formData.description}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
+          className="w-full mt-2 px-4 py-2 my-2 border rounded-lg"
         />
+       </label>
         
-        <input
+      <label className="pb-2 text-md"  > 
+      Qiymət
+          <input
           type="number"
           name="price"
           placeholder="Qiymət"
           value={formData.price}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
+          className="w-full px-4 my-2 py-2 border rounded-lg"
         />
-        <input
+      </label>
+
+       <label className="pb-2 text-md">
+       Endirim
+       <input
           type="number"
           name="discount"
           placeholder="Endirim"
           value={formData.discount}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
+          className="w-full px-4 py-2 my-2 border rounded-lg"
         />
 
+       </label  >
         {/* 📌 Kateqoriya Seçimi */}
-        <select
+       <label className="pb-2 text-md">
+       Kateqoriya Seçimi 
+       <select
           name="categoryId"
           value={formData.categoryId}
           onChange={handleChange}
-          className="w-full px-4 py-2 border rounded-lg"
+          className="w-full my-2 px-4 py-2 border rounded-lg"
         >
           <option value="">Kateqoriya seçin</option>
           {categories.map((category) => (
@@ -250,6 +264,7 @@ function AddProduct() {
             </option>
           ))}
         </select>
+       </label>
 <p>Tag seçin</p>
         {/* 📌 Taglar Seçimi */}
         <div className="space-y-2">
@@ -284,12 +299,14 @@ function AddProduct() {
         </div>
 
         {/* 📌 Şəkil Yükləmə */}
-        <input
+      <label  className="pb-2 text-md"> Məhsulun şəkili
+      <input
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          className="w-full border p-2 rounded-lg"
+          className="w-full border my-2 p-2 rounded-lg"
         />
+      </label>
 
         {/* 📌 Məhsul Əlavə Et */}
         <button
