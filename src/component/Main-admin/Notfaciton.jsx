@@ -6,11 +6,11 @@ function Notfaciton() {
   const [notifications, setNotifications] = useState([]);
   const [error, setError] = useState(null);
 
-  // useLocation hook'u URL-dəki dəyişiklikləri izləyir
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  // API-dən məlumatları çəkirik
+ 
   useEffect(() => {
     const fetchNotifications = async () => {
       try {

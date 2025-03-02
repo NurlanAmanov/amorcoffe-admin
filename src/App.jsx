@@ -25,6 +25,7 @@ import Listpromkod from './component/Main-admin/Promkodlist';
 import Inbox from './component/Main-admin/İnbox';
 import Notfaciton from './component/Main-admin/Notfaciton';
 import Calendar from './component/Main-admin/Calendar';
+import Qrnotfaciton from './component/Qrmenucompent/Qrnotfaciton';
 
 
 
@@ -93,6 +94,7 @@ function App() {
           <Route path="inbox" element={<Inbox />} />
           <Route path="notfaciton" element={<Notfaciton />} />
           <Route path="calendar" element={<Calendar />} />
+          <Route path="Qrnotfaciton" element={<Qrnotfaciton />} />
       
         </Route>
  

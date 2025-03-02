@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-function Sidebar() {
+function Siderbar() {
   const [dropdownOpen, setDropdownOpen] = useState({
     home: false,
     users: false,
@@ -16,12 +16,17 @@ function Sidebar() {
   });
 
   const [notifications, setNotifications] = useState([]);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const toggleDropdown = (menu) => {
     setDropdownOpen(prev => ({
       ...prev,
       [menu]: !prev[menu],
     }));
+  };
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed(!sidebarCollapsed);
   };
 
   useEffect(() => {
@@ -40,145 +45,371 @@ function Sidebar() {
   }, []);
 
   return (
-    <nav className="bg-[#1A202C] w-[260px]  py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300">
-      <ul className="space-y-6">
-        {/* Home */}
-        <li>
-          <Link to="/" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
-            🏠 <span className="ml-3">Ana Səhifə</span>
-          </Link>
-        </li>
+    <div className="relative">
+      {/* Toggle button for mobile/collapse */}
+      <button 
+        onClick={toggleSidebar}
+        className="absolute top-4 right-0 transform translate-x-1/2 bg-indigo-600 text-white p-2 rounded-full shadow-lg z-10 hover:bg-indigo-700 transition-all duration-300"
+      >
+        {sidebarCollapsed ? (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fillRule="evenodd" d="M9.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L7.414 9H15a1 1 0 110 2H7.414l2.293 2.293a1 1 0 010 1.414z" clipRule="evenodd" />
+          </svg>
+        )}
+      </button>
 
-        {/* Inbox */}
-        <li>
-          <Link to="inbox" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
-            📥 <span className="ml-3">İnbox</span>
-          </Link>
-        </li>
+      <nav className={`bg-gradient-to-b from-indigo-900 to-[#1A202C] ${sidebarCollapsed ? 'w-20' : 'w-[260px]'} h-screen py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300`}>
+        {/* Logo/brand area */}
+        <div className="flex items-center justify-center mb-8">
+          {sidebarCollapsed ? (
+            <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xl">A</div>
+          ) : (
+            <div className="flex items-center">
+              <div className="w-10 h-10 bg-indigo-500 rounded-full flex items-center justify-center text-white font-bold text-xl">A</div>
+              <span className="ml-3 text-white text-xl font-semibold">Admin Panel</span>
+            </div>
+          )}
+        </div>
 
-        {/* Calendar */}
-        <li>
-          <Link to="calendar" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
-            📅 <span className="ml-3">Təqvim</span>
-          </Link>
-        </li>
+        <ul className="space-y-2">
+          {/* Home */}
+          <li>
+            <Link to="/" className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">🏠</span>
+              {!sidebarCollapsed && <span className="ml-3 group-hover:text-white">Ana Səhifə</span>}
+            </Link>
+          </li>
 
-        {/* Notifications */}
-        <li>
-          <Link to="notifications" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300">
-            📥 <span className="ml-3">Bildirişlər</span>
-            {notifications.length > 0 && (
-              <span className="ml-2 bg-red-600 text-white text-xs px-2 py-1 rounded-full">
-                {notifications.length}
-              </span>
+          {/* Inbox */}
+          <li>
+            <Link to="inbox" className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">📥</span>
+              {!sidebarCollapsed && <span className="ml-3 group-hover:text-white">İnbox</span>}
+            </Link>
+          </li>
+
+          {/* Calendar */}
+          <li>
+            <Link to="calendar" className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">📅</span>
+              {!sidebarCollapsed && <span className="ml-3 group-hover:text-white">Təqvim</span>}
+            </Link>
+          </li>
+
+          {/* Notifications */}
+          <li>
+            <Link to="notfaciton" className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
+              <div className="relative flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">
+                📥
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs px-1.5 py-0.5 rounded-full min-w-[18px] flex items-center justify-center">
+                    {notifications.length}
+                  </span>
+                )}
+              </div>
+              {!sidebarCollapsed && (
+                <>
+                  <span className="ml-3 group-hover:text-white">Bildirişlər</span>
+                  {notifications.length > 0 && (
+                    <span className="ml-auto bg-red-600 text-white text-xs px-2 py-1 rounded-full">
+                      {notifications.length}
+                    </span>
+                  )}
+                </>
+              )}
+            </Link>
+          </li>
+
+          {/* Divider */}
+          <li className="border-b border-gray-700 my-3"></li>
+
+          {/* Users */}
+          <li>
+            <a href="javascript:void(0)" 
+               className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group"
+               onClick={() => toggleDropdown('users')}>
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">👤</span>
+              {!sidebarCollapsed && (
+                <>
+                  <span className="ml-3 group-hover:text-white">İstifadəçilər</span>
+                  <span className="ml-auto">
+                    <svg 
+                      className={`w-5 h-5 transition-transform duration-200 ${dropdownOpen.users ? 'rotate-180' : ''}`} 
+                      fill="currentColor" 
+                      viewBox="0 0 20 20" 
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                </>
+              )}
+            </a>
+            {dropdownOpen.users && !sidebarCollapsed && (
+              <ul className="pl-12 mt-2 space-y-2">
+                <li>
+                  <Link to="users" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Siyahı
+                  </Link>
+                </li>
+              </ul>
             )}
-          </Link>
-        </li>
+          </li>
 
-        {/* Users */}
-        <li>
-          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-800 rounded-lg px-4 py-3 transition-all duration-300"
-             onClick={() => toggleDropdown('users')}>
-            👤 <span className="ml-3">İstifadəçilər</span>
-            <span className="ml-auto">{dropdownOpen.users ? '-' : '+'}</span>
-          </a>
-          {dropdownOpen.users && (
-            <ul className="pl-8 text-gray-300 space-y-2">
-              <Link to="users" className="hover:text-white">Siyahı</Link>
-            </ul>
-          )}
-        </li>
-
-        {/* Categories */}
-        <li>
-          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
-             onClick={() => toggleDropdown('categories')}>
-            📂 <span className="ml-3">Kateqoriyalar</span>
-            <span className="ml-auto">{dropdownOpen.categories ? '-' : '+'}</span>
-          </a>
-          {dropdownOpen.categories && (
-            <ul className="pl-8 text-gray-300 space-y-4">
-              <Link to="Categoryalist" className="hover:text-white">Kateqoriya Siyahısı</Link>
-              <Link to="Categoryadd" className="hover:text-white">Yeni Kateqoriya Əlavə Et</Link>
-            </ul>
-          )}
-        </li>
-
-        {/* Products */}
-        <li>
-          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
-             onClick={() => toggleDropdown('products')}>
-            🛍 <span className="ml-3">Məhsullar</span>
-            <span className="ml-auto">{dropdownOpen.products ? '-' : '+'}</span>
-          </a>
-          {dropdownOpen.products && (
-            <ul className="pl-8 text-gray-300 space-y-2">
-              <Link to="Productlist" className="hover:text-white">Məhsul Siyahısı</Link>
-              <Link to="addmehsul" className="hover:text-white">Yeni Məhsul Əlavə Et</Link>
-            </ul>
-          )}
-        </li>
-
-        {/* Settings */}
-        <li>
-          <a href="javascript:void(0)" className="text-white text-lg flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
-             onClick={() => toggleDropdown('settings')}>
-            ⚙ <span className="ml-3">Ayarlar</span>
-            <span className="ml-auto">{dropdownOpen.settings ? '-' : '+'}</span>
-          </a>
-          {dropdownOpen.settings && (
-            <ul className="pl-8 text-gray-300 space-y-3 flex flex-col">
-              <Link to="Headbanner" className="hover:text-white">Headbanner</Link>
-              <Link to="Slogan" className="hover:text-white">Slogan</Link>
-              <Link to="Tagadd" className="hover:text-white">Taglar</Link>
-              <Link to="SocialMedia" className="hover:text-white">Socialmedia</Link>
-
-              {/* Slider Dropdown */}
-              <a href="javascript:void(0)" className="flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
-                 onClick={() => toggleDropdown('sliders')}>
-                🎞 <span className="ml-3">Sliderlar</span>
-                <span className="ml-auto">{dropdownOpen.sliders ? '-' : '+'}</span>
-              </a>
-              {dropdownOpen.sliders && (
-                <ul className="pl-8 text-gray-300 space-y-4">
-                  <Link to="Silder" className="hover:text-white">Slider</Link>
-                  <Link to="Silderlist" className="hover:text-white">Yüklənən Sliderlər</Link>
-                </ul>
+          {/* Categories */}
+          <li>
+            <a href="javascript:void(0)" 
+               className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group"
+               onClick={() => toggleDropdown('categories')}>
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">📂</span>
+              {!sidebarCollapsed && (
+                <>
+                  <span className="ml-3 group-hover:text-white">Kateqoriyalar</span>
+                  <span className="ml-auto">
+                    <svg 
+                      className={`w-5 h-5 transition-transform duration-200 ${dropdownOpen.categories ? 'rotate-180' : ''}`} 
+                      fill="currentColor" 
+                      viewBox="0 0 20 20" 
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                </>
               )}
+            </a>
+            {dropdownOpen.categories && !sidebarCollapsed && (
+              <ul className="pl-12 mt-2 space-y-2">
+                <li>
+                  <Link to="Categoryalist" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Kateqoriya Siyahısı
+                  </Link>
+                </li>
+                <li>
+                  <Link to="Categoryadd" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Yeni Kateqoriya Əlavə Et
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
 
-              {/* Promo Code Dropdown */}
-              <a href="javascript:void(0)" className="flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
-                 onClick={() => toggleDropdown('promokods')}>
-                🎟 <span className="ml-3">Promokodlar</span>
-                <span className="ml-auto">{dropdownOpen.promokods ? '-' : '+'}</span>
-              </a>
-              {dropdownOpen.promokods && (
-                <ul className="pl-8 text-gray-300 space-y-2">
-                  <Link to="Promakod" className="hover:text-white">Promokod</Link>
-                  <Link to="Promkodlist" className="hover:text-white">Yaradılan Promokodlar</Link>
-                </ul>
+          {/* Products */}
+          <li>
+            <a href="javascript:void(0)" 
+               className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group"
+               onClick={() => toggleDropdown('products')}>
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">🛍</span>
+              {!sidebarCollapsed && (
+                <>
+                  <span className="ml-3 group-hover:text-white">Məhsullar</span>
+                  <span className="ml-auto">
+                    <svg 
+                      className={`w-5 h-5 transition-transform duration-200 ${dropdownOpen.products ? 'rotate-180' : ''}`} 
+                      fill="currentColor" 
+                      viewBox="0 0 20 20" 
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                </>
               )}
+            </a>
+            {dropdownOpen.products && !sidebarCollapsed && (
+              <ul className="pl-12 mt-2 space-y-2">
+                <li>
+                  <Link to="Productlist" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Məhsul Siyahısı
+                  </Link>
+                </li>
+                <li>
+                  <Link to="addmehsul" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Yeni Məhsul Əlavə Et
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
 
-              {/* Logo Dropdown */}
-              <a href="javascript:void(0)" className="flex items-center hover:bg-gray-700 rounded-lg px-4 py-3 transition-all duration-300"
-                 onClick={() => toggleDropdown('logos')}>
-                🖼 <span className="ml-3">Logolar</span>
-                <span className="ml-auto">{dropdownOpen.logos ? '-' : '+'}</span>
-              </a>
-              {dropdownOpen.logos && (
-                <ul className="pl-8 text-gray-300 space-y-4">
-                  <Link to="Logoupload" className="hover:text-white">Logo Yüklə</Link>
-                  <Link to="LogoList" className="hover:text-white">Yüklənmiş Logolar</Link>
-                </ul>
+          {/* Settings */}
+          <li>
+            <a href="javascript:void(0)" 
+               className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group"
+               onClick={() => toggleDropdown('settings')}>
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">⚙</span>
+              {!sidebarCollapsed && (
+                <>
+                  <span className="ml-3 group-hover:text-white">Ayarlar</span>
+                  <span className="ml-auto">
+                    <svg 
+                      className={`w-5 h-5 transition-transform duration-200 ${dropdownOpen.settings ? 'rotate-180' : ''}`} 
+                      fill="currentColor" 
+                      viewBox="0 0 20 20" 
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                    </svg>
+                  </span>
+                </>
               )}
+            </a>
+            {dropdownOpen.settings && !sidebarCollapsed && (
+              <ul className="pl-12 mt-2 space-y-2">
+                <li>
+                  <Link to="Headbanner" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Headbanner
+                  </Link>
+                </li>
+                <li>
+                  <Link to="Slogan" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Slogan
+                  </Link>
+                </li>
+                <li>
+                  <Link to="Tagadd" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Taglar
+                  </Link>
+                </li>
+                <li>
+                  <Link to="SocialMedia" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Socialmedia
+                  </Link>
+                </li>
 
-              <Link to="Variantsetting" className="hover:text-white">📏 Məhsul ölçüləri</Link>
-            </ul>
-          )}
-        </li>
-      </ul>
-    </nav>
+                {/* Slider submenu */}
+                <li className="mt-2">
+                  <a href="javascript:void(0)" 
+                    className="text-gray-400 hover:text-white flex items-center py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors"
+                    onClick={() => toggleDropdown('sliders')}>
+                    <span className="mr-2 text-sm">🎞</span>
+                    <span>Sliderlar</span>
+                    <span className="ml-auto">
+                      <svg 
+                        className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen.sliders ? 'rotate-180' : ''}`} 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20" 
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </a>
+                  {dropdownOpen.sliders && (
+                    <ul className="pl-6 mt-2 space-y-1">
+                      <li>
+                        <Link to="Silder" className="text-gray-400 hover:text-white block py-1.5 px-4 text-sm hover:bg-indigo-800/20 rounded-md transition-colors">
+                          Slider
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="Silderlist" className="text-gray-400 hover:text-white block py-1.5 px-4 text-sm hover:bg-indigo-800/20 rounded-md transition-colors">
+                          Yüklənən Sliderlər
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                {/* Promo Codes submenu */}
+                <li className="mt-2">
+                  <a href="javascript:void(0)" 
+                    className="text-gray-400 hover:text-white flex items-center py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors"
+                    onClick={() => toggleDropdown('promokods')}>
+                    <span className="mr-2 text-sm">🎟</span>
+                    <span>Promokodlar</span>
+                    <span className="ml-auto">
+                      <svg 
+                        className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen.promokods ? 'rotate-180' : ''}`} 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20" 
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </a>
+                  {dropdownOpen.promokods && (
+                    <ul className="pl-6 mt-2 space-y-1">
+                      <li>
+                        <Link to="Promakod" className="text-gray-400 hover:text-white block py-1.5 px-4 text-sm hover:bg-indigo-800/20 rounded-md transition-colors">
+                          Promokod
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="Promkodlist" className="text-gray-400 hover:text-white block py-1.5 px-4 text-sm hover:bg-indigo-800/20 rounded-md transition-colors">
+                          Yaradılan Promokodlar
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                {/* Logos submenu */}
+                <li className="mt-2">
+                  <a href="javascript:void(0)" 
+                    className="text-gray-400 hover:text-white flex items-center py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors"
+                    onClick={() => toggleDropdown('logos')}>
+                    <span className="mr-2 text-sm">🖼</span>
+                    <span>Logolar</span>
+                    <span className="ml-auto">
+                      <svg 
+                        className={`w-4 h-4 transition-transform duration-200 ${dropdownOpen.logos ? 'rotate-180' : ''}`} 
+                        fill="currentColor" 
+                        viewBox="0 0 20 20" 
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd"></path>
+                      </svg>
+                    </span>
+                  </a>
+                  {dropdownOpen.logos && (
+                    <ul className="pl-6 mt-2 space-y-1">
+                      <li>
+                        <Link to="Logoupload" className="text-gray-400 hover:text-white block py-1.5 px-4 text-sm hover:bg-indigo-800/20 rounded-md transition-colors">
+                          Logo Yüklə
+                        </Link>
+                      </li>
+                      <li>
+                        <Link to="LogoList" className="text-gray-400 hover:text-white block py-1.5 px-4 text-sm hover:bg-indigo-800/20 rounded-md transition-colors">
+                          Yüklənmiş Logolar
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </li>
+
+                <li>
+                  <Link to="Variantsetting" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    <span className="mr-2">📏</span> Məhsul ölçüləri
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </li>
+        </ul>
+
+        {/* User profile at bottom */}
+        {!sidebarCollapsed && (
+          <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="flex items-center bg-indigo-800/30 p-3 rounded-lg">
+              <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
+                A
+              </div>
+              <div className="ml-3">
+                <p className="text-white text-sm font-medium">Admin</p>
+                <p className="text-gray-400 text-xs">admin@example.com</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </nav>
+    </div>
   );
 }
 
-export default Sidebar;
+export default Siderbar;
