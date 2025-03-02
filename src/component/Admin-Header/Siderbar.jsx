@@ -62,7 +62,7 @@ function Siderbar() {
         )}
       </button>
 
-      <nav className={`bg-gradient-to-b from-indigo-900 to-[#1A202C] ${sidebarCollapsed ? 'w-20' : 'w-[260px]'} h-screen py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300`}>
+      <nav className={`bg-gradient-to-b from-indigo-900 to-[#1A202C] ${sidebarCollapsed ? 'w-20' : 'w-[260px]'} h-[100vh] py-6 px-4 font-sans tracking-wide overflow-auto shadow-xl transition-all duration-300`}>
         {/* Logo/brand area */}
         <div className="flex items-center justify-center mb-8">
           {sidebarCollapsed ? (
@@ -394,19 +394,7 @@ function Siderbar() {
         </ul>
 
         {/* User profile at bottom */}
-        {!sidebarCollapsed && (
-          <div className="absolute bottom-0 left-0 right-0 p-4">
-            <div className="flex items-center bg-indigo-800/30 p-3 rounded-lg">
-              <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
-                A
-              </div>
-              <div className="ml-3">
-                <p className="text-white text-sm font-medium">Admin</p>
-                <p className="text-gray-400 text-xs">admin@example.com</p>
-              </div>
-            </div>
-          </div>
-        )}
+        
       </nav>
     </div>
   );

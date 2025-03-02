@@ -62,24 +62,6 @@ function Slider() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!id) return;
-
-    try {
-      const deleteResponse = await fetch(`https://finalprojectt-001-site1.jtempurl.com/api/Slider/${id}`, {
-        method: 'DELETE'
-      });
-
-      if (!deleteResponse.ok) throw new Error("Failed to delete image!");
-
-      // Update the images list
-      setImages(images.filter(image => image.id !== id));
-      alert("Image successfully deleted!");
-    } catch (error) {
-      console.error("Error deleting image:", error);
-      alert("Failed to delete image.");
-    }
-  };
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white shadow-md rounded-lg">
@@ -97,14 +79,7 @@ function Slider() {
         >
           {loading ? "Uploading..." : "Upload and Post URL"}
         </button>
-        {images.map(image => (
-          <div key={image.id} className="mt-4 p-2 bg-gray-100 border rounded-lg flex justify-between items-center">
-            <img src={image.url} alt="Uploaded" className="h-20 w-20 rounded" />
-            <button onClick={() => handleDelete(image.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-4 rounded">
-              Delete
-            </button>
-          </div>
-        ))}
+       
       </div>
     </div>
   );
