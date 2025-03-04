@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { loginUser } from "../service/Loginauth";
 
 
+
 const AuthContextLogin = createContext();
 
-export const CustomAuthProvider = ({ children }) => {  // ✅ Yeni ad: CustomAuthProvider
+export const CustomAuthProvider = ({ children }) => {  
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ export const CustomAuthProvider = ({ children }) => {  // ✅ Yeni ad: CustomAut
                 localStorage.setItem("token", data);
                 setUser({ token: data });
               
-                navigate("/");
+                navigate("/dashboard");
             } else {
                 throw new Error("Token qayt-arılmadı!");
             }

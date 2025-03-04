@@ -281,6 +281,12 @@ function Siderbar() {
                   </Link>
                 </li>
 
+                <li>
+                  <Link to="Registeradmin" className="text-gray-400 hover:text-white block py-2 px-4 hover:bg-indigo-800/30 rounded-md transition-colors">
+                    Admin-registr
+                  </Link>
+                </li>
+
                 {/* Slider submenu */}
                 <li className="mt-2">
                   <a href="javascript:void(0)" 
