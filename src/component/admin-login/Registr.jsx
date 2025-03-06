@@ -106,7 +106,7 @@ function RegisterPage() {
         <div className="min-h-screen w-full bg-gradient-to-br from-blue-100 to-blue-300 flex items-center justify-center px-4 py-8">
             <div className="w-full  bg-white shadow-2xl rounded-2xl overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-6">
-                    <h2 className="text-2xl font-bold text-center text-white">Qeydiyyat</h2>
+                    <h2 className="text-2xl font-bold text-center text-white">Admin Qeydiyyat</h2>
                 </div>
                 
                 <form onSubmit={handleRegister} className="p-6 space-y-4">
