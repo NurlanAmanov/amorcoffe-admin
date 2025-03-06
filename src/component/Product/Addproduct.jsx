@@ -267,20 +267,21 @@ Başlıq
        </label>
 <p>Tag seçin</p>
         {/* 📌 Taglar Seçimi */}
-        <div className="space-y-2">
-          {tags.map((tag) => (
-            <div key={tag.id} className="flex items-center">
-              <input
-                type="checkbox"
-                name="tagIds"
-                value={tag.id}
-                onChange={handleChange}
-                className="mr-2"
-              />
-              <span>{tag.name}</span>
-            </div>
-          ))}
-        </div>
+        <div className="space-y-2 max-h-60 overflow-y-scroll border p-2 rounded-lg">
+  {tags.map((tag) => (
+    <div key={tag.id} className="flex items-center">
+      <input
+        type="checkbox"
+        name="tagIds"
+        value={tag.id}
+        onChange={handleChange}
+        className="mr-2"
+      />
+      <span>{tag.name}</span>
+    </div>
+  ))}
+</div>
+
         <p>Ölçü seçin</p>
         {/* 📌 Variantlar Seçimi */}
         <div className="space-y-2">

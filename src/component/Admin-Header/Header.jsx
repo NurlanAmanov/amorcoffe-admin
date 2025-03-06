@@ -93,17 +93,7 @@ function Header() {
       <header className="bg-white shadow-md py-4 px-6">
         <div className="w-full mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
-          <div className=" ">
-            <div className="flex items-center bg-indigo-800/30 p-3 rounded-lg">
-              <div className="w-10 h-10 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold">
-                A
-              </div>
-              <div className="ml-3">
-                <p className="text-white text-sm font-medium">Admin</p>
-                <p className="text-white text-xs">admin@example.com</p>
-              </div>
-            </div>
-          </div>
+         
           
           <div className="relative">
             <button 
