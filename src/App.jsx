@@ -25,6 +25,7 @@ import Calendar from './component/Main-admin/Calendar';
 import Qrnotfaciton from './component/Qrmenucompent/Qrnotfaciton';
 import LoginPage from './component/admin-login/Loginpage';
 import RegisterPage from './component/admin-login/Registr';
+import Zodiac from './component/Main-admin/Zodiac';
 
 // Create a Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -76,6 +77,7 @@ function App() {
         <Route path="calendar" element={<Calendar />} />
         <Route path="Qrnotfaciton" element={<Qrnotfaciton />} />
         <Route path="Registeradmin" element={<RegisterPage />} />
+        <Route path="Zodiac" element={<Zodiac />} />
       </Route>
     </Routes>
   );

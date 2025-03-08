@@ -99,6 +99,12 @@ function Siderbar() {
               {!sidebarCollapsed && <span className="ml-3 group-hover:text-white">Təqvim</span>}
             </Link>
           </li>
+          <li>
+            <Link to="Zodiac" className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
+              <span className="flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">♑</span>
+              {!sidebarCollapsed && <span className="ml-3 group-hover:text-white">Bürc</span>}
+            </Link>
+          </li>
 
           {/* Notifications */}
           <li>
