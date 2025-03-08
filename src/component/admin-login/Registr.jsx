@@ -80,7 +80,7 @@ function RegisterPage() {
             form.append("ImgUrl", formData.ImgUrl);
 
             const response = await axios.post(
-                "https://finalprojectt-001-site1.jtempurl.com/api/Auth/Register",
+                "https://finalprojectt-001-site1.jtempurl.com/api/Auth/register",
                 form,
                 {
                     headers: {
