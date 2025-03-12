@@ -17,6 +17,7 @@ function Siderbar() {
 
   const [notifications, setNotifications] = useState([]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const toggleDropdown = (menu) => {
     setDropdownOpen(prev => ({
@@ -29,11 +30,20 @@ function Siderbar() {
     setSidebarCollapsed(!sidebarCollapsed);
   };
 
+  const openNotificationsModal = (e) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          'https://finalprojectt-001-site1.jtempurl.com/api/Contact?limit=30'
+          'https://finalprojectt-001-site1.jtempurl.com/api/Contact'
         );
         setNotifications(response.data);
       } catch (error) {
@@ -108,7 +118,9 @@ function Siderbar() {
 
           {/* Notifications */}
           <li>
-            <Link to="notfaciton" className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
+            <a href="#" 
+              onClick={openNotificationsModal}
+              className="text-gray-300 flex items-center hover:bg-indigo-700 rounded-lg px-4 py-3 transition-all duration-300 group">
               <div className="relative flex items-center justify-center w-8 h-8 bg-indigo-800/50 rounded-lg text-lg">
                 📥
                 {notifications.length > 0 && (
@@ -127,7 +139,7 @@ function Siderbar() {
                   )}
                 </>
               )}
-            </Link>
+            </a>
           </li>
 
           {/* Divider */}
@@ -404,10 +416,62 @@ function Siderbar() {
             )}
           </li>
         </ul>
-
-        {/* User profile at bottom */}
-        
       </nav>
+
+      {/* Notifications Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-3xl w-full max-h-[80vh] flex flex-col">
+            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Bildirişlər</h3>
+              <button 
+                onClick={closeModal}
+                className="text-gray-400 hover:text-gray-500 focus:outline-none"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="flex-1 overflow-auto p-4">
+              {notifications.length > 0 ? (
+                <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+                  {notifications.map((notification, index) => (
+                    <li key={index} className="py-4">
+                      <div className="flex flex-col space-y-1">
+                        <div className="flex justify-between">
+                          <p className="font-medium text-gray-900 dark:text-white">{notification.name}</p>
+                          <span className="text-sm text-gray-500">{new Date(notification.createdAt).toLocaleDateString()}</span>
+                        </div>
+                        <p className="text-gray-600 dark:text-gray-300">{notification.email}</p>
+                        <p className="text-gray-700 dark:text-gray-300">{notification.subject}</p>
+                        <p className="text-gray-600 dark:text-gray-400">{notification.message}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-full py-8">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                  </svg>
+                  <p className="mt-2 text-gray-500 dark:text-gray-400">Heç bir bildiriş yoxdur</p>
+                </div>
+              )}
+            </div>
+            
+            <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+              <button
+                onClick={closeModal}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Bağla
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
