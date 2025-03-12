@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import bell from '../../assets/icon/bell.png'; // Mövcud zəng ikonunu saxlayırıq
+import bell from '../../assets/icon/bell.png';
 
 function Header() {
   const [orders, setOrders] = useState([]);
+  const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -11,24 +12,36 @@ function Header() {
   const [notification, setNotification] = useState(null);
 
   useEffect(() => {
-    const fetchQROrders = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get('https://finalprojectt-001-site1.jtempurl.com/api/Order/all-qr-code-orders');
-        setOrders(response.data);
+        // Paralel olaraq həm sifarişləri həm də masaları yükləyirik
+        const [ordersResponse, tablesResponse] = await Promise.all([
+          axios.get('https://finalprojectt-001-site1.jtempurl.com/api/Order/all-qr-code-orders'),
+          axios.get('https://finalprojectt-001-site1.jtempurl.com/api/Table')
+        ]);
+        
+        setOrders(ordersResponse.data);
+        setTables(tablesResponse.data);
         setLoading(false);
       } catch (error) {
-        console.error('QR kod sifarişlərini yükləmək mümkün olmadı:', error);
-        setError('QR kod sifarişlərini yükləmək mümkün olmadı');
+        console.error('Məlumatları yükləmək mümkün olmadı:', error);
+        setError('Məlumatları yükləmək mümkün olmadı');
         setLoading(false);
       }
     };
 
-    fetchQROrders();
+    fetchData();
     
-    // Auto refresh orders every 2 minutes
-    const interval = setInterval(fetchQROrders, 120000);
+    // Hər 2 dəqiqədə məlumatları yeniləyirik
+    const interval = setInterval(fetchData, 120000);
     return () => clearInterval(interval);
   }, []);
+
+  // Masa adına görə masa ID-ni tapmaq üçün funksiya
+  const getTableIdByName = (tableName) => {
+    const table = tables.find(t => t.name === tableName);
+    return table ? table.id : "Tapılmadı";
+  };
 
   const toggleModal = () => {
     setIsModalOpen(!isModalOpen);
@@ -36,7 +49,7 @@ function Header() {
 
   const handleOrderStatusChange = async (orderId, status) => {
     try {
-      // Here you would typically have an API call to update the order status
+      // API çağırışı - əgər real API istifadə ediləcəksə, bu xətti aktiv edin
       // await axios.put(`https://finalprojectt-001-site1.jtempurl.com/api/Order/${orderId}/status`, { status });
       
       setOrders((prevOrders) => 
@@ -94,7 +107,6 @@ function Header() {
         <div className="w-full mx-auto flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">Admin Panel</h1>
          
-          
           <div className="relative">
             <button 
               className="p-2 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none"
@@ -112,7 +124,6 @@ function Header() {
               )}
             </button>
           </div>
-          
         </div>
       </header>
 
@@ -164,6 +175,7 @@ function Header() {
                           <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Miqdar</th>
                           <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Yaradılma Tarixi</th>
                           <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Masa Adı</th>
+                          <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Masa ID</th>
                           <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                         </tr>
                       </thead>
@@ -171,6 +183,8 @@ function Header() {
                         {orders.map((order) =>
                           order.orderProducts.map((product) => {
                             const priceToShow = product.product.discount ? product.product.finalPrice : product.product.price;
+                            const tableId = getTableIdByName(order.tableName);
+                            
                             return (
                               <tr 
                                 key={product.id} 
@@ -182,6 +196,7 @@ function Header() {
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{product.quantity}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{new Date(order.createdAt).toLocaleString()}</td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{order.tableName || "Masa adı daxil edilməyib"}</td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{tableId}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                   <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full border ${getStatusBadgeClass(order.status)}`}>
                                     {order.status || 'Qəbul Edilmədi'}
@@ -203,6 +218,7 @@ function Header() {
                 <div className="flex flex-col md:flex-row gap-4 justify-between items-center">
                   <div className="text-sm text-gray-700">
                     <p><span className="font-semibold">Seçilmiş sifariş:</span> {selectedOrder.tableName || "Masa adı daxil edilməyib"}</p>
+                    <p><span className="font-semibold">Masa ID:</span> {getTableIdByName(selectedOrder.tableName)}</p>
                     <p><span className="font-semibold">Sifarişin tarixi:</span> {new Date(selectedOrder.createdAt).toLocaleString()}</p>
                   </div>
                   <div className="flex gap-3">
