@@ -11,33 +11,31 @@ function SocialMedia() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [urls, setUrls] = useState([]); // Bütün URL-ləri saxlamaq üçün state
+  const [urls, setUrls] = useState([]); 
+  const [refreshData, setRefreshData] = useState(false); // Yeniləmə üçün state əlavə et
 
-  // 📌 Get social media URLs from API
+  // 📌 API-dən sosial media URL-ləri yüklə
+  const fetchSocialMediaUrls = async () => {
+    try {
+      const response = await axios.get('https://finalprojectt-001-site1.jtempurl.com/api/SocialMedia');
+      setUrls(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Xəta baş verdi. URL-ləri yükləmək mümkün olmadı.');
+      setLoading(false);
+    }
+  };
+
+  // useEffect içində refreshData hər dəfə dəyişəndə API çağırışı et
   useEffect(() => {
-    const fetchSocialMediaUrls = async () => {
-      try {
-        const response = await axios.get('https://finalprojectt-001-site1.jtempurl.com/api/SocialMedia');
-        setSocialMediaUrls(response.data);
-        setUrls(response.data); // API-dan gələn URL-ləri saxlayın
-        setLoading(false);
-      } catch (err) {
-        setError('Xəta baş verdi. URL-ləri yükləmək mümkün olmadı.');
-        setLoading(false);
-      }
-    };
-
     fetchSocialMediaUrls();
-  }, []);
+  }, [refreshData]); 
 
   // 📌 Handle form submission (POST)
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // FormData obyekti yaradın
     const formData = new FormData();
-
-    // Yalnız doldurulmuş URL-ləri əlavə edin
     Object.keys(socialMediaUrls).forEach(key => {
       if (socialMediaUrls[key]) {
         formData.append(key, socialMediaUrls[key]);
@@ -45,15 +43,16 @@ function SocialMedia() {
     });
 
     try {
-      const token = localStorage.getItem('jwtToken'); // Token əlavə edin
-      const response = await axios.post('https://finalprojectt-001-site1.jtempurl.com/api/SocialMedia', formData, {
+      const token = localStorage.getItem('jwtToken');
+      await axios.post('https://finalprojectt-001-site1.jtempurl.com/api/SocialMedia', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data', // Content-Type düzəldin
-          'Authorization': `Bearer ${token}` // Token əlavə edin
+          'Content-Type': 'multipart/form-data',
+          'Authorization': `Bearer ${token}`
         }
       });
+
       alert('Sosial media URL-ləri uğurla göndərildi!');
-      fetchSocialMediaUrls(); // URL-ləri yenidən yükləyin
+      setRefreshData(prev => !prev); // Yenidən yükləmə üçün refreshData dəyiş
     } catch (error) {
       console.error("Xəta:", error.response ? error.response.data : error.message);
       alert('Xəta baş verdi. URL-ləri göndərmək mümkün olmadı.');
@@ -63,16 +62,15 @@ function SocialMedia() {
   // 📌 URL silmək funksiyası
   const handleDelete = async (id) => {
     try {
-      const token = localStorage.getItem('jwtToken'); // Token əlavə edin
-      const response = await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/SocialMedia/${id}`, {
+      const token = localStorage.getItem('jwtToken');
+      await axios.delete(`https://finalprojectt-001-site1.jtempurl.com/api/SocialMedia/${id}`, {
         headers: {
-          'Authorization': `Bearer ${token}` // Token əlavə edin
+          'Authorization': `Bearer ${token}`
         }
       });
-      if (response.status === 200) {
-        alert('URL uğurla silindi!');
-        fetchSocialMediaUrls(); // URL-ləri yenidən yükləyin
-      }
+
+      alert('URL uğurla silindi!');
+      setRefreshData(prev => !prev); // Yeniləmə üçün refreshData dəyiş
     } catch (error) {
       console.error("Xəta:", error.response ? error.response.data : error.message);
       alert('URL silinməsi zamanı xəta baş verdi!');
@@ -86,54 +84,19 @@ function SocialMedia() {
     <div className="w-[45%] mx-auto p-6 bg-light rounded">
       <h2 className="text-2xl font-semibold mb-6">Sosial Media URL-ləri</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-lg font-medium" htmlFor="FacebookUrl">Facebook URL</label>
-          <input
-            type="text"
-            id="FacebookUrl"
-            name="FacebookUrl"
-            value={socialMediaUrls.FacebookUrl}
-            onChange={(e) => setSocialMediaUrls({ ...socialMediaUrls, FacebookUrl: e.target.value })}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-lg font-medium" htmlFor="LinkedinUrl">Linkedin URL</label>
-          <input
-            type="text"
-            id="LinkedinUrl"
-            name="LinkedinUrl"
-            value={socialMediaUrls.LinkedinUrl}
-            onChange={(e) => setSocialMediaUrls({ ...socialMediaUrls, LinkedinUrl: e.target.value })}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-lg font-medium" htmlFor="InstagramUrl">Instagram URL</label>
-          <input
-            type="text"
-            id="InstagramUrl"
-            name="InstagramUrl"
-            value={socialMediaUrls.InstagramUrl}
-            onChange={(e) => setSocialMediaUrls({ ...socialMediaUrls, InstagramUrl: e.target.value })}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-lg font-medium" htmlFor="TwitterUrl">Twitter URL</label>
-          <input
-            type="text"
-            id="TwitterUrl"
-            name="TwitterUrl"
-            value={socialMediaUrls.TwitterUrl}
-            onChange={(e) => setSocialMediaUrls({ ...socialMediaUrls, TwitterUrl: e.target.value })}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
+        {['FacebookUrl', 'LinkedinUrl', 'InstagramUrl', 'TwitterUrl'].map((key) => (
+          <div key={key} className="mb-4">
+            <label className="block text-lg font-medium" htmlFor={key}>{key.replace("Url", "")} URL</label>
+            <input
+              type="text"
+              id={key}
+              name={key}
+              value={socialMediaUrls[key]}
+              onChange={(e) => setSocialMediaUrls({ ...socialMediaUrls, [key]: e.target.value })}
+              className="w-full p-2 border rounded"
+            />
+          </div>
+        ))}
         <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
           Yadda saxla
         </button>
@@ -144,37 +107,19 @@ function SocialMedia() {
         <h3 className="text-xl font-semibold mb-4">Mövcud URL-lər</h3>
         {urls.map((url, index) => (
           <div key={index} className="flex items-center justify-between p-3 border rounded-lg mb-2">
-           <ul className='flex flex-col'> 
-           <li> 
-           
-            <a href={url.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-              {url.facebookUrl}
-            </a>
-            </li>
-            <li> 
-           
-           <a href={url.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-             {url.linkedinUrl}
-           </a>
-           </li>
-
-           <li> 
-           
-           <a href={url.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-             {url.instagramUrl}
-           </a>
-           </li>
-
-
-           <li> 
-           
-           <a href={url.url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-             {url.twitterUrl}
-           </a>
-           </li>
-           </ul>
+            <ul className="flex flex-col">
+              {Object.keys(url).map((key) => (
+                key !== 'id' && url[key] && (
+                  <li key={key}>
+                    <a href={url[key]} target="_blank" rel="noopener noreferrer" className="text-blue-500">
+                      {key.replace("Url", "")}
+                    </a>
+                  </li>
+                )
+              ))}
+            </ul>
             <button
-              onClick={() => handleDelete(url.id)} // URL-in id-sinə görə sil
+              onClick={() => handleDelete(url.id)}
               className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
             >
               Sil
